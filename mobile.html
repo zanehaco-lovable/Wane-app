@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wane · وانە (Mobile)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{--ink:#0f1c1a;--ink2:#16302c;--paper:#f2eee4;--card:#fff;--sun:#f5c542;--sun-d:#d9a91f;--green:#1f6e5b;--green-d:#155244;--red:#c2412d;--muted:#6b7d78;--line:#e4dfd2;--ok:#1f8a5b;--blue:#2b6cb0;--shadow:0 10px 30px -14px rgba(15,28,26,.3);--r:16px;--rs:10px;--f:'Sora',system-ui,sans-serif;--fa:'Noto Kufi Arabic',serif;--scale:1}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}
+body{background:radial-gradient(120% 90% at 100% 0%,#16302c,#0f1c1a 55%) fixed;color:var(--ink);font-family:var(--f);font-size:calc(15px*var(--scale));-webkit-font-smoothing:antialiased}
+html[lang="ckb"] body,html[lang="ar"] body{font-family:var(--fa)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:.95rem}
+.app{min-height:100vh;display:flex;flex-direction:column}.hide{display:none!important}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 20px;background:rgba(15,28,26,.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:30}
+.brand{display:flex;align-items:center;gap:9px;color:#fff;font-weight:800;font-size:1.1rem}
+.brand .mark{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--sun),var(--sun-d));color:#0f1c1a;font-weight:800}
+.spacer{flex:1}
+.auth-wrap{flex:1;display:grid;place-items:center;padding:34px 16px}
+.auth{width:100%;max-width:940px;display:grid;grid-template-columns:1.1fr .9fr;background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.auth .hero{padding:40px 34px;background:linear-gradient(140deg,#16302c,#0f1c1a);color:#fff;position:relative;overflow:hidden}
+.auth .hero h1{font-size:2rem;font-weight:800;line-height:1.15;margin-bottom:12px}.auth .hero p{color:#bcd3cd;line-height:1.7}
+.sun-arc{position:absolute;inset-inline-end:-70px;top:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--sun),transparent 70%);opacity:.5}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}.pill{font-size:.72rem;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.auth .form{padding:38px 32px;display:flex;flex-direction:column;gap:12px}
+.field label{font-size:.78rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:var(--rs);outline:none;background:#fbfaf6}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green)}
+.demo-accts{display:grid;gap:8px}
+.demo-card{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);background:#fbfaf6;text-align:start;width:100%}
+.demo-card:hover{border-color:var(--green)}.demo-card .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;color:#fff;flex:0 0 auto}
+.demo-card small{color:var(--muted);font-size:.72rem;display:block}
+.err{color:var(--red);font-size:.82rem;font-weight:700;min-height:1em}
+.lang{display:flex;align-items:center;gap:6px;background:#fbfaf6;border:1.5px solid var(--line);border-radius:999px;padding:7px 11px;cursor:pointer}
+.lang select{flex:1;background:transparent;border:none;outline:none;font-weight:600;font-size:.84rem;color:var(--ink);cursor:pointer}
+.btn{border-radius:11px;padding:11px 15px;font-weight:800;font-size:.86rem;background:var(--sun);color:#0f1c1a;transition:.12s;white-space:nowrap}
+.btn:hover{background:var(--sun-d)}.btn.green{background:var(--green);color:#fff}.btn.green:hover{background:var(--green-d)}
+.btn.ghost{background:#efece3;color:var(--ink);border:1.5px solid var(--line)}.btn.dark{background:var(--ink);color:#fff}.btn.red{background:var(--red);color:#fff}
+.btn.sm{padding:8px 11px;font-size:.78rem;border-radius:9px}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.block{display:block;width:100%;text-align:center}
+.shell{flex:1;display:grid;grid-template-columns:240px 1fr;min-height:0}
+.side{background:#fff;border-inline-end:1px solid var(--line);padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+.side-user{display:flex;align-items:center;gap:10px;padding:11px;border-radius:var(--rs);background:#f5f3ec;border:1px solid var(--line)}
+.side-user .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;flex:0 0 auto}
+.side-user .nm{font-weight:700;font-size:.9rem;margin-bottom:3px}
+.side-nav{display:flex;flex-direction:column;gap:3px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rs);font-weight:600;font-size:.88rem;color:var(--ink2);width:100%;text-align:start}
+.nav-item:hover{background:#f1efe7}.nav-item.on{background:var(--ink);color:#fff}.nav-item .ic{width:18px;text-align:center}
+.side .sp{flex:1}
+.side-ctl{display:flex;flex-direction:column;gap:8px}
+.net{display:flex;align-items:center;justify-content:center;gap:7px;font-size:.78rem;background:#fbfaf6;border:1.5px solid var(--line);border-radius:999px;padding:8px;font-weight:700;color:var(--ink2)}
+.net.off{color:var(--red);border-color:#f0c9c0;background:#fbeae6}.net .led{width:9px;height:9px;border-radius:50%;background:var(--ok)}.net.off .led{background:var(--red)}
+.main{background:var(--paper);overflow:auto;padding:24px 28px}
+.page-h{margin-bottom:18px}.page-h h1{font-size:1.45rem;font-weight:800}.page-h p{color:var(--muted);font-size:.88rem;margin-top:2px}
+.grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.stat .n{font-size:1.9rem;font-weight:800;color:var(--green)}.stat .l{color:var(--muted);font-size:.82rem;font-weight:600;margin-top:3px}
+.hero{background:linear-gradient(140deg,#1f6e5b,#16302c);color:#fff;border-radius:var(--r);padding:20px;position:relative;overflow:hidden;margin-bottom:16px}
+.hero .arc{position:absolute;inset-inline-end:-50px;top:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--sun),transparent 70%);opacity:.4}
+.hero h2{font-size:1.3rem;font-weight:800}.hero p{color:#cfe3dd;font-size:.85rem;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:10px 11px;text-align:start;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--muted);font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px}tr:last-child td{border-bottom:none}
+.tag{font-size:.7rem;font-weight:800;padding:3px 9px;border-radius:999px;display:inline-block}.tag.ok{background:#e7f6ee;color:#1f8a5b}.tag.lock{background:#eef1ec;color:#6b7d78}.tag.live{background:#fbeae6;color:#c2412d}.tag.blue{background:#e7f0fa;color:#2b6cb0}.tag.warn{background:#fdf3da;color:#9a7b12}
+textarea{width:100%;min-height:84px;padding:12px;border:1.5px solid var(--line);border-radius:var(--rs);resize:vertical;outline:none;line-height:1.6}textarea:focus{border-color:var(--green)}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.node{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.node.locked{opacity:.55}.node.unlocked{border-color:var(--sun)}.node.completed{border-color:var(--ok);background:#f3faf6}
+.node .dot{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.2rem;flex:0 0 auto;background:#eef1ec}
+.node.unlocked .dot{background:var(--sun);color:#0f1c1a}.node.completed .dot{background:var(--ok);color:#fff}
+.node .m{flex:1;min-width:0}.node .m h3{font-size:1rem;font-weight:700}.node .m small{color:var(--muted)}
+.voucher{border:1.5px dashed var(--green);border-radius:14px;padding:14px;display:flex;gap:14px;align-items:center;background:#fbfdfb;margin-bottom:10px}
+.voucher .qr{width:84px;height:84px;flex:0 0 auto;background:#fff;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;overflow:hidden}
+.voucher .qr img{width:100%;height:100%}.voucher .qr .ph{font-size:.6rem;color:var(--muted);text-align:center;padding:4px}
+.voucher .info{flex:1;min-width:0}.voucher .code{font-weight:800;font-size:1.05rem;letter-spacing:1px}.voucher .amt{color:var(--green);font-weight:800}
+.send-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.send-row a{font-size:.74rem;font-weight:700;padding:6px 10px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink)}
+.send-row a:hover{background:#f1efe7}
+.balance{background:linear-gradient(135deg,#16302c,#0f1c1a);color:#fff;border-radius:var(--r);padding:20px;position:relative;overflow:hidden;margin-bottom:14px}
+.balance .arc{position:absolute;inset-inline-end:-40px;bottom:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--sun),transparent 70%);opacity:.35}
+.balance .lab{color:#bcd3cd;font-size:.78rem;font-weight:700}.balance .amt{font-size:2.1rem;font-weight:800;margin-top:4px}
+.toast{position:fixed;inset-block-end:22px;inset-inline-start:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 19px;border-radius:999px;font-weight:700;font-size:.85rem;box-shadow:var(--shadow);z-index:80;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;inset-block-end:30px}
+bdi{unicode-bidi:isolate}.latin{background:rgba(31,110,91,.1);padding:0 4px;border-radius:5px;font-weight:700}
+.seg{display:inline-flex;gap:5px;background:#eef1ec;border-radius:10px;padding:4px}
+.seg button{padding:7px 12px;border-radius:7px;font-weight:700;font-size:.8rem;color:var(--muted)}.seg button.on{background:var(--ink);color:#fff}
+@media(max-width:920px){.auth{grid-template-columns:1fr}.auth .hero{display:none}.shell{grid-template-columns:1fr}.side{flex-flow:row wrap;border-bottom:1px solid var(--line);border-inline-end:none}.side-nav{flex-direction:row;overflow:auto;flex:1 1 100%}.g4,.g3,.g2{grid-template-columns:1fr}.main{padding:16px}}
+@media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:fixed;inset:0;padding:40px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- mobile app shell ---- */
+body{background:#0a1513}
+#app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);position:relative;display:flex;flex-direction:column}
+@media(min-width:520px){#app{margin:18px auto;min-height:calc(100vh - 36px);border-radius:30px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);border:8px solid #0a1513}}
+.m-appbar{display:flex;align-items:center;gap:9px;padding:14px 16px;background:linear-gradient(180deg,#16302c,#0f1c1a);color:#fff;position:sticky;top:0;z-index:20}
+.m-appbar b{font-size:1.05rem}.m-appbar .sp{flex:1}
+.m-mk{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--sun),var(--sun-d));color:#0f1c1a;font-weight:800}
+.m-appbar .lang{background:rgba(255,255,255,.12);border:none;padding:6px 9px}.m-appbar .lang select{color:#fff}.m-appbar .lang option{color:#111}
+.m-logout{color:#fff;font-size:1.1rem;padding:4px 8px;background:rgba(255,255,255,.12);border-radius:9px}
+.m-nav{display:flex;gap:7px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:58px;z-index:19;-webkit-overflow-scrolling:touch}
+.m-nav::-webkit-scrollbar{display:none}
+.m-tab{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font-weight:700;font-size:.82rem;color:var(--ink2);background:#f1efe7;white-space:nowrap}
+.m-tab.on{background:var(--ink);color:#fff}
+.m-main{flex:1;overflow:auto;padding:16px;background:var(--paper)}
+.m-main .grid.g4,.m-main .grid.g3,.m-main .grid.g2{grid-template-columns:1fr 1fr}
+.auth{grid-template-columns:1fr!important}.auth .hero{display:block!important;padding:26px 22px!important}
+
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+<div id="printArea" class="hide"></div>
+<script>
+const Mem={};const Store={get(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return k in Mem?Mem[k]:null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){Mem[k]=v}}};
+const DIRS={en:'ltr',fr:'ltr',kmr:'ltr',diq:'ltr',ckb:'rtl',ar:'rtl'};
+const SCALE={en:1,fr:1,kmr:1,diq:1,ckb:1.08,ar:1.06};
+const LANGS=[{code:'ckb',label:'سۆرانی'},{code:'kmr',label:'Kurmancî'},{code:'diq',label:'Zazakî'},{code:'ar',label:'العربية'},{code:'en',label:'English'},{code:'fr',label:'Français'}];
+const T={
+ en:{name:'Wane Console',tag:'Role-based control panel',signin:'Sign in',email:'Email',pass:'Password',login:'Log in',demo:'Demo accounts',admin:'Administrator',teacher:'Teacher',student:'Student',agent:'Agent',bad:'Wrong email or password.',
+  dash:'Dashboard',learn:'Curriculum',exam:'Exams',certificate:'Certificate',rules:'Grammar rules',vouchers:'Vouchers',agents:'Agents',sell:'Sell cards',sales:'Sales',sessions:'Live sessions',analytics:'Analytics',students:'Students',studio:'Studio',wallet:'Wallet',applyAgent:'Become an agent',
+  welcome:'Welcome back',net:'Connection',online:'Online',offline:'Offline',logout:'Log out',role:'Role',dialect:'Dialect',mock:'demo',
+  levels:'Levels',done:'Completed',level:'Level',locked:'Locked',unlocked:'Open',completed:'Done',start:'Start',review:'Review',pass:'Pass 80%',score:'Score',
+  add:'Add',save:'Save',edit:'Edit',cancel:'Cancel',publish:'Publish',published:'Published',draft:'Draft',delete:'Delete',approve:'Approve',reject:'Reject',allocate:'Allocate',name:'Name',phone:'Phone',region:'Region',status:'Status',amount:'Amount',qty:'Quantity',generate:'Generate',
+  ruleText:'Rule text',rulesAdmin:'Edit any rule, even after publishing',rulesTeacher:'You can add rules and edit only the ones you published',owner:'Owner',mine:'You',noEdit:'Locked (other author)',
+  vouchersH:'Digital balance cards (QR) — sell or send by SMS / WhatsApp / Email',sendSms:'SMS',sendWa:'WhatsApp',sendEmail:'Email',print:'Print',redeem:'Redeem voucher',redeemCode:'Voucher code',redeemed:'Redeemed',active:'Active',sold:'Sold',allocateTo:'Allocate to agent',unassigned:'Unassigned',
+  agentsH:'Agent applications & approved agents',apply:'Apply',applyH:'Apply to resell Wane balance cards. Admin reviews your request.',pending:'Pending',approved:'Approved',rejected:'Rejected',myApplication:'My application',becomeAgent:'Apply to become an agent',
+  sellH:'Cards allocated to you by the admin — sell and send to buyers',buyer:'Buyer (phone/email)',markSold:'Mark sold & send',noCards:'No cards allocated yet.',commission:'Commission 10%',
+  balance:'Balance',subscribe:'Subscribe $9.99',topup:'Top up $20',payout:'Request payout',transactions:'Transactions',noTx:'No transactions.',
+  SUBSCRIPTION:'Subscription',TOPUP:'Top up',PAYOUT:'Payout',VOUCHER:'Voucher redeem',SALE:'Card sale',COMMISSION:'Commission',
+  lessons:'Lessons',addLevel:'Add level',levelTitle:'Level title',addLesson:'Add lesson',lessonTitle:'Lesson title',ytId:'YouTube link (unlisted)',ytNote:'Unlisted videos embed fine; private videos cannot be embedded on other sites.',watch:'Watch',
+  bookExam:'Book accredited exam',mOnline:'Online (proctored)',mOnsite:'On-site',center:'Center',myBookings:'My bookings',book:'Book',seatsLeft:'seats left',full:'Full',booked:'Booked',
+  issueCert:'Issue certificate',certNeed:'Complete all levels to unlock your accredited certificate.',verifyAt:'Verify at',
+  sessionsH:'Schedule live sessions (Zoom / Google Meet)',title:'Title',platform:'Platform',when:'When',mins:'Minutes',create:'Generate link',join:'Join',
+  errTracker:'Common student errors',benchmark:'Run compliance test',benchOk:'Reference texts corrected as expected.',
+  notReal:'Front-end demo. AI, payments, SMS and certificates are mocked unless backend keys are set.'},
+ ar:{name:'لوحة وانە',tag:'لوحة تحكم بحسب الدور',signin:'تسجيل الدخول',email:'البريد',pass:'كلمة المرور',login:'دخول',demo:'حسابات تجريبية',admin:'مدير',teacher:'معلّم',student:'طالب',agent:'وكيل',bad:'بريد أو كلمة مرور غير صحيحة.',
+  dash:'الرئيسية',learn:'المنهاج',exam:'الامتحانات',certificate:'الشهادة',rules:'قواعد اللغة',vouchers:'البطاقات',agents:'الوكلاء',sell:'بيع البطاقات',sales:'المبيعات',sessions:'الحصص المباشرة',analytics:'التحليلات',students:'الطلاب',studio:'الاستوديو',wallet:'المحفظة',applyAgent:'كن وكيلاً',
+  welcome:'أهلاً من جديد',net:'الاتصال',online:'متصل',offline:'غير متصل',logout:'خروج',role:'الدور',dialect:'اللهجة',mock:'محاكاة',
+  levels:'المستويات',done:'المنجزة',level:'المستوى',locked:'مقفل',unlocked:'مفتوح',completed:'مكتمل',start:'ابدأ',review:'مراجعة',pass:'النجاح ٨٠٪',score:'الدرجة',
+  add:'إضافة',save:'حفظ',edit:'تعديل',cancel:'إلغاء',publish:'نشر',published:'منشورة',draft:'مسودة',delete:'حذف',approve:'قبول',reject:'رفض',allocate:'تخصيص',name:'الاسم',phone:'الهاتف',region:'المنطقة',status:'الحالة',amount:'المبلغ',qty:'الكمية',generate:'توليد',
+  ruleText:'نص القاعدة',rulesAdmin:'يمكنك تعديل أي قاعدة حتى بعد نشرها',rulesTeacher:'يمكنك إضافة قواعد وتعديل ما نشرته أنت فقط',owner:'المالك',mine:'أنت',noEdit:'مقفل (مؤلف آخر)',
+  vouchersH:'بطاقات رصيد ديجيتال (QR) — بيعها أو إرسالها عبر SMS / واتساب / إيميل',sendSms:'رسالة نصية',sendWa:'واتساب',sendEmail:'إيميل',print:'طباعة',redeem:'استبدال بطاقة',redeemCode:'كود البطاقة',redeemed:'مُستبدَلة',active:'فعّالة',sold:'مُباعة',allocateTo:'تخصيص لوكيل',unassigned:'غير مخصَّصة',
+  agentsH:'طلبات الوكلاء والوكلاء المعتمدون',apply:'تقديم',applyH:'قدّم طلباً لبيع بطاقات وانە. يراجع الآدمن طلبك.',pending:'قيد المراجعة',approved:'مقبول',rejected:'مرفوض',myApplication:'طلبي',becomeAgent:'تقديم طلب لتكون وكيلاً',
+  sellH:'بطاقات خصّصها لك الآدمن — بِعها وأرسلها للمشتري',buyer:'المشتري (هاتف/إيميل)',markSold:'وسم كمباعة وإرسال',noCards:'لا توجد بطاقات مخصّصة بعد.',commission:'عمولة ١٠٪',
+  balance:'الرصيد',subscribe:'اشترِ ٩٫٩٩$',topup:'اشحن ٢٠$',payout:'طلب سحب',transactions:'المعاملات',noTx:'لا معاملات.',
+  SUBSCRIPTION:'اشتراك',TOPUP:'شحن',PAYOUT:'سحب',VOUCHER:'استبدال بطاقة',SALE:'بيع بطاقة',COMMISSION:'عمولة',
+  lessons:'الدروس',addLevel:'إضافة مستوى',levelTitle:'عنوان المستوى',addLesson:'إضافة درس',lessonTitle:'عنوان الدرس',ytId:'رابط يوتيوب (غير مُدرَج)',ytNote:'فيديوهات Unlisted تُضمَّن بنجاح؛ الفيديوهات الخاصة لا يمكن تضمينها في مواقع أخرى.',watch:'شاهد',
+  bookExam:'حجز امتحان معتمد',mOnline:'أونلاين (مراقَب)',mOnsite:'حضوري',center:'المركز',myBookings:'حجوزاتي',book:'احجز',seatsLeft:'مقعد متبقٍ',full:'مكتمل',booked:'محجوز',
+  issueCert:'إصدار الشهادة',certNeed:'أكمل كل المستويات لفتح شهادتك المعتمدة.',verifyAt:'تحقّق عبر',
+  sessionsH:'جدولة حصص مباشرة (Zoom / Google Meet)',title:'العنوان',platform:'المنصة',when:'الموعد',mins:'دقائق',create:'توليد الرابط',join:'انضم',
+  errTracker:'أخطاء الطلاب الشائعة',benchmark:'تشغيل اختبار الالتزام',benchOk:'تم تصحيح النصوص المرجعية كما هو متوقّع.',
+  notReal:'واجهة تجريبية. الـ AI والمدفوعات والرسائل والشهادات محاكاة ما لم تُضبط مفاتيح الخادم.'},
+};
+// other languages fall back to English; provide nav essentials for ckb/kmr/diq/fr
+const NAVX={
+ ckb:{name:'وانە',dash:'سەرەکی',learn:'مەنهەج',exam:'تاقیکردنەوەکان',certificate:'بڕوانامە',rules:'یاساکان',vouchers:'بطاقەکان',agents:'وەکیلەکان',sell:'فرۆشتن',sales:'فرۆش',sessions:'وانە ڕاستەوخۆکان',analytics:'ئامار',students:'خوێندکاران',studio:'ستۆدیۆ',wallet:'جزدان',applyAgent:'ببە وەکیل',login:'بچۆ ژوورەوە',email:'ئیمەیڵ',pass:'وشەی نهێنی',demo:'هەژماری تاقیکردنەوە',admin:'بەڕێوەبەر',teacher:'مامۆستا',student:'خوێندکار',agent:'وەکیل',logout:'دەرچوون',online:'سەرهێڵ',offline:'دەرهێڵ'},
+ kmr:{name:'Wane',dash:'Sermase',learn:'Bername',exam:'Ezmûn',certificate:'Bawername',rules:'Rêzik',vouchers:'Kart',agents:'Berdest',sell:'Firotin',sales:'Firotin',sessions:'Danişîn',analytics:'Statîstîk',students:'Xwendekar',studio:'Studyo',wallet:'Berîk',applyAgent:'Bibe berdest',login:'Têkeve',email:'E-name',pass:'Şîfre',demo:'Hesabên ceribandinê',admin:'Rêveber',teacher:'Mamoste',student:'Xwendekar',agent:'Berdest',logout:'Derkeve',online:'Serhêl',offline:'Negirêdayî'},
+ diq:{name:'Wane',dash:'Sere',learn:'Bername',exam:'Ezmûnî',certificate:'Belge',rules:'Qayde',vouchers:'Kart',agents:'Berdestî',sell:'Roniştiş',sales:'Rotiş',sessions:'Roniştiş',analytics:'Statîstîk',students:'Wendekarî',studio:'Studyo',wallet:'Berîke',applyAgent:'Bı berdest',login:'Cıkewe',email:'E-name',pass:'Şîfre',demo:'Hesabê ceribnayîşî',admin:'Îdarekar',teacher:'Mamosta',student:'Wendekar',agent:'Berdest',logout:'Vejîya',online:'Serhet',offline:'Qet nêbeste'},
+ fr:{name:'Console Wane',dash:'Tableau',learn:'Programme',exam:'Examens',certificate:'Certificat',rules:'Règles',vouchers:'Cartes',agents:'Agents',sell:'Vendre',sales:'Ventes',sessions:'Sessions live',analytics:'Analytiques',students:'Étudiants',studio:'Studio',wallet:'Portefeuille',applyAgent:'Devenir agent',login:'Se connecter',email:'E-mail',pass:'Mot de passe',demo:'Comptes démo',admin:'Administrateur',teacher:'Enseignant',student:'Étudiant',agent:'Agent',logout:'Déconnexion',online:'En ligne',offline:'Hors-ligne'},
+};
+const EXTRA2={
+ en:{users:'Accounts',treasury:'Treasury',buy:'Buy cards',courses:'Courses',enrollments:'Enrollments',
+   suspend:'Suspend',activate:'Activate',suspended:'Suspended',reasonQ:'Reason for suspension:',active2:'Active',
+   prepBalance:'Add balance to treasury',treasuryBal:'Treasury balance',issued:'Issued in cards',insufficientTreasury:'Not enough treasury balance to print these cards.',
+   buyCards:'Buy cards from admin',wholesale:'Wholesale price',buyNow:'Buy',onlyFromAdmin:'Cards are sold only by the admin.',availableStock:'Available from admin',
+   license:'Agency license',agreement:'Agreement',signAgreement:'Sign agreement',adminSigned:'Admin signed',agentSigned:'Agent signed',signed:'Signed',awaitingAgent:'Awaiting agent signature',licenseTerms:'The agent is licensed to resell Wane balance cards purchased from the platform, at the agreed prices, and agrees to the platform terms. Disputes are governed by Wane policy.',
+   adminNote:'Admin vision / note',editReason:'Reason for edit',reqClarify:'Ask author to clarify',clarifyAsked:'Clarification requested',explain:'Explain rule (why) + examples',submitExplain:'Submit explanation',explanation:'Author explanation',examples:'Examples',needClarify:'Admin asked you to clarify this rule',
+   courseTitle:'Course title',price:'Price',createCourse:'Create course',publishCourse:'Publish',curriculumReq:'A clear curriculum (≥1 lesson) is required before publishing.',noCurriculum:'Define a curriculum first',buyCourse:'Buy course',cash:'Cash',fromWallet:'From wallet',sellCourse:'Sell / confirm',platformShare:'Platform share',teacherGets:'Teacher gets',confirmed:'Confirmed',enroll:'Request enrollment',pendingEnroll:'Pending',accept:'Accept',myCourses:'My courses',browseCourses:'Available courses',sold:'Sold',
+   COURSE:'Course purchase',COMMISSION:'Commission',BUY_CARDS:'Card purchase',CARD_INCOME:'Card sales income'},
+ ar:{users:'الحسابات',treasury:'الخزينة',buy:'شراء بطاقات',courses:'الكورسات',enrollments:'التسجيلات',
+   suspend:'إيقاف',activate:'تفعيل',suspended:'موقوف',reasonQ:'سبب الإيقاف:',active2:'فعّال',
+   prepBalance:'إضافة رصيد للخزينة',treasuryBal:'رصيد الخزينة',issued:'مُصدَر كبطاقات',insufficientTreasury:'رصيد الخزينة لا يكفي لطبع هذه البطاقات.',
+   buyCards:'شراء بطاقات من الأدمن',wholesale:'سعر الجملة',buyNow:'شراء',onlyFromAdmin:'البطاقات تُباع من الأدمن حصراً.',availableStock:'المتاح لدى الأدمن',
+   license:'رخصة الوكالة',agreement:'الاتفاقية',signAgreement:'توقيع الاتفاقية',adminSigned:'وقّع الأدمن',agentSigned:'وقّع الوكيل',signed:'موقّعة',awaitingAgent:'بانتظار توقيع الوكيل',licenseTerms:'يُرخَّص للوكيل بإعادة بيع بطاقات رصيد وانە المشتراة من المنصة بالأسعار المتفق عليها، ويلتزم بشروط المنصة. تُحكَم النزاعات بسياسة وانە.',
+   adminNote:'رؤية/ملاحظة الأدمن',editReason:'سبب التعديل',reqClarify:'اطلب توضيحاً من المؤلف',clarifyAsked:'طُلب التوضيح',explain:'اشرح القاعدة (لماذا) + أمثلة',submitExplain:'إرسال الشرح',explanation:'شرح المؤلف',examples:'أمثلة',needClarify:'طلب الأدمن منك توضيح هذه القاعدة',
+   courseTitle:'عنوان الكورس',price:'السعر',createCourse:'إنشاء كورس',publishCourse:'نشر',curriculumReq:'يلزم منهاج واضح (درس واحد على الأقل) قبل النشر.',noCurriculum:'حدّد منهاجاً أولاً',buyCourse:'شراء الكورس',cash:'كاش',fromWallet:'من المحفظة',sellCourse:'بيع / تأكيد',platformShare:'حصة المنصة',teacherGets:'يحصل المعلّم',confirmed:'مؤكَّد',enroll:'طلب تسجيل',pendingEnroll:'قيد المراجعة',accept:'قبول',myCourses:'كورساتي',browseCourses:'الكورسات المتاحة',sold:'مُباع',
+   COURSE:'شراء كورس',COMMISSION:'عمولة',BUY_CARDS:'شراء بطاقات',CARD_INCOME:'دخل بيع بطاقات'},
+};
+Object.assign(T.en,EXTRA2.en);Object.assign(T.ar,EXTRA2.ar);
+const EXTRA3={
+ en:{teachers:'Find teachers',searchTeacher:'Search by teacher name',searchCourse:'Search courses',subject:'Subject',allSubjects:'All subjects',maxPrice:'Max price',filter:'Filter',clear:'Clear',noResults:'No results.',viewProfile:'Profile',expertise:'Expertise',bio:'Bio',
+  quizzes:'Assessments',committee:'Exam committee',committees:'Exam committees',teacherApps:'Teacher applications',becomeTeacher:'Apply to teach',
+  buildLesson:'Build lesson',template:'Template',lessonBody:'Lesson content',addQuiz:'New assessment',quizTitle:'Assessment title',question:'Question',option:'Option',correct:'Correct',marks:'Marks',addQuestion:'Add question',saveQuiz:'Save assessment',takeQuiz:'Take assessment',result:'Result',yourScore:'Your score',pickCourse:'Choose course',
+  createCommittee:'Create committee',committeeName:'Committee name',members:'Members',assign:'Assign teachers',proposeQ:'Propose question',aiAssist:'AI draft',proposed:'Proposed',approveQ:'Approve',bank:'Official question bank',approvedQ:'Approved questions',committeeNote:'Final/accredited exams are built by this committee, not by a single teacher.',memberOf:'You are a committee member',
+  applyTeach:'Apply to teach on Wane',subjectsTeach:'Subjects you teach',experience:'Experience',certs:'Certificates (academic / professional)',attachCert:'Attach certificate',uploaded:'attached',submitApp:'Submit application',appUnderReview:'Application under review',mustApprove:'You must be approved to publish lessons.',approveTeacher:'Approve as teacher',
+  aiNote:'AI-assisted (rule-based draft; set AI_API_KEY for full LLM).',unlimitedMint:'Admin mints cards freely — no balance required.',cardRevenue:'Card sales revenue'},
+ ar:{teachers:'ابحث عن أساتذة',searchTeacher:'ابحث باسم الأستاذ',searchCourse:'ابحث عن كورسات',subject:'المادة',allSubjects:'كل المواد',maxPrice:'أعلى سعر',filter:'تصفية',clear:'مسح',noResults:'لا نتائج.',viewProfile:'الملف',expertise:'التخصص',bio:'نبذة',
+  quizzes:'الاختبارات',committee:'لجنة الامتحان',committees:'لجان الامتحانات',teacherApps:'طلبات الأساتذة',becomeTeacher:'تقديم للتدريس',
+  buildLesson:'بناء درس',template:'القالب',lessonBody:'محتوى الدرس',addQuiz:'اختبار جديد',quizTitle:'عنوان الاختبار',question:'السؤال',option:'خيار',correct:'الصحيح',marks:'العلامة',addQuestion:'إضافة سؤال',saveQuiz:'حفظ الاختبار',takeQuiz:'أداء الاختبار',result:'النتيجة',yourScore:'درجتك',pickCourse:'اختر الكورس',
+  createCommittee:'إنشاء لجنة',committeeName:'اسم اللجنة',members:'الأعضاء',assign:'تعيين أساتذة',proposeQ:'اقتراح سؤال',aiAssist:'مسودة ذكاء اصطناعي',proposed:'مقترَح',approveQ:'اعتماد',bank:'بنك الأسئلة الرسمي',approvedQ:'الأسئلة المعتمدة',committeeNote:'الامتحانات النهائية/المعتمدة تبنيها هذه اللجنة، لا معلّم منفرد.',memberOf:'أنت عضو في اللجنة',
+  applyTeach:'تقديم للتدريس في وانە',subjectsTeach:'المواد التي تدرّسها',experience:'الخبرة',certs:'الشهادات (أكاديمية/مهنية)',attachCert:'إرفاق شهادة',uploaded:'مُرفقة',submitApp:'إرسال الطلب',appUnderReview:'الطلب قيد المراجعة',mustApprove:'يلزم اعتمادك لتتمكّن من نشر الدروس.',approveTeacher:'اعتماد كأستاذ',
+  aiNote:'بمساعدة ذكاء اصطناعي (مسودة بالقواعد؛ اضبط AI_API_KEY للنموذج الكامل).',unlimitedMint:'الأدمن يصكّ البطاقات بحرّية — لا يلزم رصيد.',cardRevenue:'إيراد بيع البطاقات'},
+};
+Object.assign(T.en,EXTRA3.en);Object.assign(T.ar,EXTRA3.ar);
+const t=k=>{const L=S.lang;if(T[L]&&T[L][k]!=null)return T[L][k];if(NAVX[L]&&NAVX[L][k]!=null)return NAVX[L][k];return (T.en[k]!=null?T.en[k]:k)};
+
+const RC={ADMIN:'#c2412d',TEACHER:'#1f6e5b',STUDENT:'#d9a91f',AGENT:'#2b6cb0'};
+const LV=[
+ {id:'L1',o:1,n:{ckb:'ئەلفوبێ و دەنگەکان',kmr:'Alfabe û Deng',diq:'Alfabe û Veng',en:'Alphabet & Sounds',fr:'Alphabet & sons',ar:'الأبجدية والأصوات'}},
+ {id:'L2',o:2,n:{ckb:'ناساندنی خۆت',kmr:'Xwe nas kirin',diq:'Xo nasnayîş',en:'Introduce yourself',fr:'Se présenter',ar:'تقديم نفسك'}},
+ {id:'L3',o:3,n:{ckb:'ڕستەی سادە',kmr:'Hevoka sade',diq:'Cumleya sade',en:'Simple sentences',fr:'Phrases simples',ar:'الجمل البسيطة'}},
+ {id:'L4',o:4,n:{ckb:'کات و ژمارە',kmr:'Dem û Hejmar',diq:'Wext û Amar',en:'Time & Numbers',fr:'Temps & nombres',ar:'الوقت والأرقام'}},
+ {id:'L5',o:5,n:{ckb:'ئەرگەتیڤ و ڕابردوو',kmr:'Ergatîf û Borî',diq:'Ergatîf û Vîyarte',en:'Ergative & Past',fr:'Ergatif & passé',ar:'الإرغاتيف والماضي'}},
+ {id:'L6',o:6,n:{ckb:'گفتوگۆی ئاست‌بەرز',kmr:'Axaftina Pêşketî',diq:'Qiseykerdişo Pêşkewte',en:'Advanced conversation',fr:'Conversation avancée',ar:'محادثة متقدّمة'}},
+];
+const lvName=l=>l.n[S.lang]||l.n.en;
+const MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const EXAM_CENTERS={ckb:'Wane Center — Hewlêr',ar:'مركز وانە — أربيل',en:'Wane Center — Erbil',kmr:'Wane Navend — Amed',diq:'Wane Merkez — Dêrsim',fr:'Centre Wane — Erbil'};
+const SUBJECTS=[
+ {id:'soranî',n:{en:'Soranî',ar:'سۆرانی',ckb:'سۆرانی'}},
+ {id:'kurmancî',n:{en:'Kurmancî',ar:'كرمانجي',ckb:'کورمانجی'}},
+ {id:'zazakî',n:{en:'Zazakî',ar:'زازاكي',ckb:'زازاکی'}},
+ {id:'grammar',n:{en:'Grammar',ar:'القواعد',ckb:'ڕێزمان'}},
+ {id:'phonetics',n:{en:'Phonetics',ar:'الأصوات',ckb:'دەنگناسی'}},
+ {id:'conversation',n:{en:'Conversation',ar:'المحادثة',ckb:'گفتوگۆ'}},
+];
+const subjName=id=>{const s=SUBJECTS.find(x=>x.id===id);return s?(s.n[S.lang]||s.n.en):id};
+const LESSON_TPL=[
+ {id:'video',ic:'▶',n:{en:'Video',ar:'فيديو'}},
+ {id:'reading',ic:'▤',n:{en:'Reading',ar:'قراءة'}},
+ {id:'grammar',ic:'⚙',n:{en:'Grammar',ar:'قاعدة'}},
+ {id:'practice',ic:'✎',n:{en:'Practice',ar:'تمرين'}},
+];
+
+function seedUsers(){return [
+ {id:'a',name:'Aram Admin',email:'admin@wane.academy',pass:'admin123',role:'ADMIN',dialect:'ckb',status:'ACTIVE',reason:'',subjects:[]},
+ {id:'t',name:'Rojîn Mamoste',email:'teacher@wane.academy',pass:'teacher123',role:'TEACHER',dialect:'kmr',status:'ACTIVE',reason:'',subjects:['kurmancî','grammar'],approved:true,bio:'10y teaching Kurmancî grammar.'},
+ {id:'s',name:'Dîlan Student',email:'student@wane.academy',pass:'student123',role:'STUDENT',dialect:'ckb',status:'ACTIVE',reason:'',subjects:[]},
+ {id:'g',name:'Karwan Agent',email:'agent@wane.academy',pass:'agent123',role:'AGENT',dialect:'kmr',status:'ACTIVE',reason:'',subjects:[]},
+]}
+
+let S={
+ lang:Store.get('wc_lang')||'ckb',
+ user:Store.get('wc_user')||null,
+ view:'dash',
+ users:Store.get('wc_users')||seedUsers(),
+ progress:Store.get('wc_prog')||{L1:'unlocked',L2:'locked',L3:'locked',L4:'locked',L5:'locked',L6:'locked'},
+ scores:Store.get('wc_scores')||{},
+ wallets:Store.get('wc_wallets')||{},          // userId -> {balance, tx:[]}
+ rules:Store.get('wc_rules')||[
+   {id:'r1',dialect:'kmr',text:'Ergative: di borî ya gerguhêz de kirde (Min/Te/Wî) digire.',ownerId:'a',ownerName:'Aram Admin',published:true},
+   {id:'r2',dialect:'ckb',text:'لە ڕابردووی کرداری گواستراو، جێناوی بەستراو بەکاردێت.',ownerId:'t',ownerName:'Rojîn Mamoste',published:true},
+ ],
+ curriculum:Store.get('wc_curr')||[{id:'c1',title:'Kurmancî Basics',lessons:[{id:'le1',title:'Alphabet & sounds',yt:'',tpl:'reading',body:'Letters, vowels and pronunciation.'}]}],
+ slots:Store.get('wc_slots')||[
+   {id:'sl1',date:'2026-06-18',time:'17:00',seats:8,booked:0},
+   {id:'sl2',date:'2026-06-22',time:'19:00',seats:5,booked:0},
+   {id:'sl3',date:'2026-06-26',time:'16:30',seats:4,booked:0},
+ ],
+ bookings:Store.get('wc_bookings')||[],
+ examMode:Store.get('wc_exammode')||'online',
+ vouchers:Store.get('wc_vouchers')||[],        // {id,code,amount,status,ownerAgent,buyer,createdBy}
+ applications:Store.get('wc_apps')||[],         // {id,userId,name,phone,region,status}
+ sessions:Store.get('wc_sessions')||[{id:'s1',title:'Soranî — Conversation',platform:'Google Meet',when:'2026-06-19 18:00',link:'meet.google.com/abc-defg-hij'}],
+ treasury:Store.get('wc_treasury')||{balance:50000,issued:0},
+ licenses:Store.get('wc_licenses')||[],
+ courses:Store.get('wc_courses')||[{id:'co1',teacherId:'t',title:'Kurmancî for Beginners',subject:'kurmancî',price:20,published:true}],
+ enrollments:Store.get('wc_enroll')||[],
+ sales:Store.get('wc_sales')||[],
+ platformPct:15, wholesalePct:90,
+ teacherApps:Store.get('wc_tapps')||[],
+ committees:Store.get('wc_comm')||[{id:'cm1',name:'Kurmancî B1 Board',dialect:'kmr',memberIds:['t'],status:'ACTIVE'}],
+ examBank:Store.get('wc_bank')||[],
+ quizzes:Store.get('wc_quiz')||[{id:'qz1',courseId:'co1',title:'Lesson 1 check',questions:[{q:'Min nan ____ . (borî)',options:['xwar','dixwim','bixwe','xwarin'],answer:0,marks:5}]}],
+ attempts:Store.get('wc_att')||[],
+ q:{teacher:'',tSubject:'',course:'',cMax:'',cSubject:''},
+ online:true, quiz:null, edit:null,
+};
+const TREASURY_KEYS=['wc_treasury','wc_licenses','wc_courses','wc_enroll','wc_sales'];
+function save(){const m={wc_lang:S.lang,wc_user:S.user,wc_users:S.users,wc_prog:S.progress,wc_scores:S.scores,wc_wallets:S.wallets,wc_rules:S.rules,wc_curr:S.curriculum,wc_slots:S.slots,wc_bookings:S.bookings,wc_exammode:S.examMode,wc_vouchers:S.vouchers,wc_apps:S.applications,wc_sessions:S.sessions,wc_treasury:S.treasury,wc_licenses:S.licenses,wc_courses:S.courses,wc_enroll:S.enrollments,wc_sales:S.sales,wc_tapps:S.teacherApps,wc_comm:S.committees,wc_bank:S.examBank,wc_quiz:S.quizzes,wc_att:S.attempts};for(const k in m)Store.set(k,m[k])}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function smart(x){if(!x)return'';if(DIRS[S.lang]!=='rtl')return esc(x);return String(x).split(' ').map(w=>/[A-Za-zçşêîûÇŞÊÎÛ]/.test(w)?`<bdi dir="ltr" class="latin">${esc(w)}</bdi>`:esc(w)).join(' ')}
+function applyDir(){const r=document.documentElement;r.setAttribute('dir',DIRS[S.lang]);r.setAttribute('lang',S.lang);r.style.setProperty('--scale',SCALE[S.lang])}
+let tm;function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(tm);tm=setTimeout(()=>e.classList.remove('show'),2200)}
+function money(c){return (c/100).toFixed(2)}
+function wallet(uid){if(!S.wallets[uid])S.wallets[uid]={balance:0,tx:[]};return S.wallets[uid]}
+function genCode(){const s=()=>Math.random().toString(36).slice(2,6).toUpperCase();return `WANE-${s()}-${s()}`}
+function qrDataUrl(text){try{if(typeof qrcode!=='function')return null;const q=qrcode(0,'M');q.addData(text);q.make();return q.createDataURL(4,4)}catch(e){return null}}
+function qrBox(text){const u=qrDataUrl(text);return u?`<img src="${u}" alt="QR">`:`<div class="ph">QR<br>${esc(text)}</div>`}
+
+function render(){applyDir();document.getElementById('app').innerHTML=S.user?shell():authView();bind()}
+function langSel(){return `<label class="lang"><span style="opacity:.7">🌐</span><select id="lang">${LANGS.map(l=>`<option value="${l.code}" ${l.code===S.lang?'selected':''}>${l.label}</option>`).join('')}</select></label>`}
+
+function authView(){return `<div class="topbar"><div class="brand"><span class="mark">و</span><span>${t('name')}</span></div><div class="spacer"></div>${langSel()}</div>
+ <div class="auth-wrap"><div class="auth">
+  <div class="hero"><div class="sun-arc"></div><h1>${t('tag')}</h1><p>${t('notReal')}</p>
+   <div class="pills">${['ADMIN','TEACHER','STUDENT','AGENT'].map(r=>`<span class="pill">${t(r.toLowerCase())}</span>`).join('')}</div></div>
+  <div class="form"><h2 style="font-weight:800">${t('signin')}</h2>
+   <div class="field"><label>${t('email')}</label><input id="email" type="email" placeholder="admin@wane.academy"></div>
+   <div class="field"><label>${t('pass')}</label><input id="pass" type="password" placeholder="••••••••"></div>
+   <div class="err" id="err"></div><button class="btn block" id="go">${t('login')}</button>
+   <div class="field"><label>${t('demo')}</label><div class="demo-accts">
+    ${S.users.map(u=>`<button class="demo-card" data-e="${u.email}" data-p="${u.pass}"><span class="ic" style="background:${RC[u.role]}">${esc(u.name[0])}</span><div><b>${esc(u.name)}</b><small>${u.email} · ${t(u.role.toLowerCase())}</small></div></button>`).join('')}
+   </div></div>
+  </div></div></div>`}
+
+function isCommitteeMember(uid){return S.committees.some(c=>c.memberIds.includes(uid))}
+function navFor(role){
+ if(role==='ADMIN')return[['dash','▣'],['users','◉'],['teacherApps','✦'],['committees','⚖'],['rules','⚙'],['vouchers','▤'],['treasury','▦'],['agents','◈'],['analytics','◔']];
+ if(role==='TEACHER'){const n=[['dash','▣'],['studio','✚'],['courses','◆'],['quizzes','✎'],['enrollments','◉'],['rules','⚙'],['sessions','▶'],['wallet','▦']];if(isCommitteeMember(S.user.id))n.splice(5,0,['committee','⚖']);return n;}
+ if(role==='AGENT')return[['dash','▣'],['buy','▤'],['sell','◈'],['sales','◔'],['wallet','▦']];
+ return[['dash','▣'],['learn','◆'],['teachers','◉'],['courses','✚'],['exam','✎'],['certificate','✦'],['wallet','▦'],['becomeTeacher','✦'],['applyAgent','◈']];
+}
+function shell(){
+ const u=S.user,nav=navFor(u.role);if(!nav.find(n=>n[0]===S.view))S.view=nav[0][0];
+ return `<div class="m-appbar"><span class="m-mk">و</span><b>${t('name')}</b><span class="sp"></span>${langSel()}<button class="m-logout" id="logout">⎋</button></div>
+  <div class="m-nav">${nav.map(([k,ic])=>`<button class="m-tab ${S.view===k?'on':''}" data-view="${k}"><span>${ic}</span>${t(k)}</button>`).join('')}</div>
+  <div class="m-main" id="main">${page()}</div>`;
+}
+function page(){switch(S.view){
+ case 'dash':return pageDash();case 'learn':return pageLearn();case 'exam':return pageExam();case 'certificate':return pageCert();
+ case 'rules':return pageRules();case 'vouchers':return pageVouchers();case 'agents':return pageAgents();
+ case 'sell':return pageSell();case 'sales':return pageSales();case 'sessions':return pageSessions();
+ case 'analytics':return pageAnalytics();case 'students':return pageStudents();case 'studio':return pageStudio();
+ case 'wallet':return pageWallet();case 'applyAgent':return pageApply();
+ case 'users':return pageUsers();case 'treasury':return pageTreasury();case 'buy':return pageBuy();
+ case 'courses':return pageCourses();case 'enrollments':return pageEnrollments();
+ case 'teachers':return pageTeachers();case 'quizzes':return pageQuizzes();case 'committee':return pageCommittee();
+ case 'committees':return pageCommittees();case 'teacherApps':return pageTeacherApps();case 'becomeTeacher':return pageBecomeTeacher();default:return pageDash();}}
+function H(title,sub){return `<div class="page-h"><h1>${title}</h1>${sub?`<p>${sub}</p>`:''}</div>`}
+
+/* ---------- DASHBOARDS (specialized per role) ---------- */
+function pageDash(){
+ const u=S.user;const hero=`<div class="hero"><div class="arc"></div><h2>${t('welcome')}, ${esc(u.name)}</h2><p>${t(u.role.toLowerCase())} · ${t('name')}</p></div>`;
+ if(u.role==='ADMIN'){const pend=S.applications.filter(a=>a.status==='PENDING').length;
+  return hero+`<div class="grid g4">
+   <div class="card stat"><div class="n">${S.users.length}</div><div class="l">${t('students')}</div></div>
+   <div class="card stat"><div class="n">${S.rules.length}</div><div class="l">${t('rules')}</div></div>
+   <div class="card stat"><div class="n">${S.vouchers.length}</div><div class="l">${t('vouchers')}</div></div>
+   <div class="card stat"><div class="n">${pend}</div><div class="l">${t('pending')}</div></div></div>`;
+ }
+ if(u.role==='TEACHER'){const myRules=S.rules.filter(r=>r.ownerId===u.id).length;const les=S.curriculum.reduce((s,l)=>s+l.lessons.length,0);
+  return hero+`<div class="grid g3">
+   <div class="card stat"><div class="n">${S.curriculum.length}</div><div class="l">${t('levels')}</div></div>
+   <div class="card stat"><div class="n">${les}</div><div class="l">${t('lessons')}</div></div>
+   <div class="card stat"><div class="n">${myRules}</div><div class="l">${t('rules')}</div></div></div>`;
+ }
+ if(u.role==='AGENT'){const mine=S.vouchers.filter(v=>v.ownerAgent===u.id);const sold=mine.filter(v=>v.status==='SOLD').length;const L=S.licenses.find(x=>x.agentId===u.id);
+  const lic=L?`<div class="card" style="margin-bottom:14px;border:1.5px solid ${L.agentSigned?'var(--ok)':'var(--sun-d)'}"><h3 style="margin-bottom:6px">${t('license')} · ${t('agreement')}</h3>
+    <p style="color:var(--muted);font-size:.82rem;line-height:1.6">${esc(L.terms)}</p>
+    <div class="row" style="margin-top:10px"><span class="tag ok">${t('adminSigned')} ✓</span><span class="tag ${L.agentSigned?'ok':'warn'}">${L.agentSigned?t('agentSigned')+' ✓':t('awaitingAgent')}</span>
+     ${L.agentSigned?'':`<button class="btn green sm" data-signlicense="${L.id}">${t('signAgreement')}</button>`}</div></div>`:'';
+  return hero+lic+`<div class="grid g3">
+   <div class="card stat"><div class="n">${mine.length}</div><div class="l">${t('vouchers')}</div></div>
+   <div class="card stat"><div class="n">${sold}</div><div class="l">${t('sold')}</div></div>
+   <div class="card stat"><div class="n">$${money(wallet(u.id).balance)}</div><div class="l">${t('balance')}</div></div></div>`;
+ }
+ const done=Object.values(S.progress).filter(v=>v==='completed').length;
+ return hero+`<div class="grid g3">
+   <div class="card stat"><div class="n">${LV.length}</div><div class="l">${t('levels')}</div></div>
+   <div class="card stat"><div class="n">${done}</div><div class="l">${t('done')}</div></div>
+   <div class="card stat"><div class="n">$${money(wallet(u.id).balance)}</div><div class="l">${t('balance')}</div></div></div>`;
+}
+
+/* ---------- LEARN ---------- */
+function allLevels(){return [...LV,...S.curriculum.map((c,i)=>({id:c.id,o:LV.length+i+1,n:{en:c.title,ar:c.title,ckb:c.title,kmr:c.title,diq:c.title,fr:c.title},lessons:c.lessons}))]}
+function pageLearn(){
+ return H(t('learn'),t('pass'))+`<div>`+allLevels().map(l=>{
+  const st=S.progress[l.id]||(l.o<=LV.length?'locked':'unlocked');const sc=S.scores[l.id];const ic=st==='completed'?'✓':st==='unlocked'?'◆':'🔒';const can=st!=='locked';
+  return `<div class="node ${st}"><div class="dot">${ic}</div><div class="m"><h3>${t('level')} ${l.o} · ${esc(lvName(l))}</h3><small>${st==='completed'?`${t('score')}: ${sc||'—'}%`:t(st)}</small></div>
+   <button class="btn sm ${st==='completed'?'green':''}" data-quiz="${l.id}" ${can?'':'disabled'}>${st==='completed'?t('review'):t('start')}</button></div>`;
+ }).join('')+`</div>`;
+}
+function genQ(){const pool=[
+  {q:'Min sêv ____ . (xwarin, past)',o:['xwar','dixwim','bixwe','xwarin'],a:0},
+  {q:'Choose the ergative subject (past transitive):',o:['Ez','Min','Tu','Em'],a:1},
+  {q:'وشەی ڕاست بۆ «كتاب»:',o:['پەرتووک','نامە','قەڵەم','مێز'],a:0},
+  {q:'Hejmara "sê" bi îngilîzî:',o:['two','three','four','five'],a:1}];
+ return [...pool].sort(()=>Math.random()-.5).slice(0,4);}
+function pageQuiz(){
+ const Q=S.quiz,it=Q.items[Q.i];
+ if(Q.done){const p=Q.score>=80;return `<div style="max-width:560px;margin:30px auto"><div class="card" style="text-align:center">
+   <div style="font-size:3rem">${p?'🎉':'📚'}</div><h2 style="margin:8px 0">${t('score')}: ${Q.score}%</h2>
+   <p style="color:${p?'var(--ok)':'var(--red)'};font-weight:800;margin-bottom:16px">${p?t('completed'):t('review')}</p>
+   <button class="btn" id="qback">OK</button></div></div>`}
+ return `<div style="max-width:560px;margin:0 auto"><p style="color:var(--muted);margin-bottom:10px">${Q.i+1}/${Q.items.length} · ${t('pass')}</p>
+  <div class="card"><h2 style="font-size:1.15rem;margin-bottom:14px">${smart(it.q)}</h2>
+  ${it.o.map((o,i)=>{let c='node';let st='';if(Q.rev){if(i===it.a)st='completed';else if(i===Q.picked[Q.i])st='locked'}else if(Q.picked[Q.i]===i)st='unlocked';return `<button class="node ${st}" style="width:100%;text-align:start" data-o="${i}" ${Q.rev?'disabled':''}><div class="m"><h3 style="font-size:.95rem">${smart(o)}</h3></div></button>`}).join('')}
+  ${Q.rev?`<button class="btn block" id="qnext">${Q.i+1<Q.items.length?'→':'✓'}</button>`:`<button class="btn green block" id="qsub" ${Q.picked[Q.i]==null?'disabled':''}>OK</button>`}
+  </div></div>`;
+}
+function finishQuiz(){const Q=S.quiz;let r=0;Q.items.forEach((it,i)=>{if(Q.picked[i]===it.a)r++});Q.score=Math.round(100*r/Q.items.length);Q.done=true;
+ if(Q.score>=80){S.scores[Q.level]=Q.score;S.progress[Q.level]='completed';const cur=allLevels().find(l=>l.id===Q.level);const nx=allLevels().find(l=>l.o===((cur&&cur.o)||0)+1);if(nx&&S.progress[nx.id]==='locked')S.progress[nx.id]='unlocked'}save();render()}
+
+/* ---------- EXAM booking (online/onsite) ---------- */
+function pageExam(){
+ if(S.quiz)return pageQuiz();
+ const myIds=S.bookings.map(b=>b.slotId);
+ const seg=(m,l)=>`<button class="${S.examMode===m?'on':''}" data-mode="${m}">${l}</button>`;
+ return H(t('exam'),t('bookExam'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:8px">${t('bookExam')}</h3>
+   <div class="seg" style="margin-bottom:12px">${seg('online','🖥 '+t('mOnline'))}${seg('onsite','📍 '+t('mOnsite'))}</div>
+   ${S.examMode==='onsite'?`<p style="font-size:.85rem;margin-bottom:10px"><span class="tag blue">${t('center')}</span> ${esc(EXAM_CENTERS[S.lang]||EXAM_CENTERS.en)}</p>`:''}
+   ${S.slots.map(sl=>{const d=new Date(sl.date);const left=sl.seats-sl.booked;const mine=myIds.includes(sl.id);const full=left<=0&&!mine;
+     return `<div class="node ${mine?'completed':''}"><div class="dot">${d.getDate()}<br><span style="font-size:.5rem">${MONTHS[d.getMonth()]}</span></div>
+      <div class="m"><h3>${sl.time}</h3><small>${mine?t('booked'):(full?t('full'):left+' '+t('seatsLeft'))}</small></div>
+      ${mine?`<button class="btn ghost sm" data-unbook="${sl.id}">${t('cancel')}</button>`:`<button class="btn sm" data-bookslot="${sl.id}" ${full?'disabled':''}>${t('book')}</button>`}</div>`}).join('')}
+  </div>
+  <div class="card"><h3 style="margin-bottom:8px">${t('myBookings')}</h3>
+   ${S.bookings.length?S.bookings.map(b=>{const sl=S.slots.find(x=>x.id===b.slotId);const on=b.mode==='online';return `<div class="node"><div class="dot">${on?'🖥':'📍'}</div><div class="m"><h3 style="font-size:.95rem">${sl?sl.date+' · '+sl.time:''}</h3><small style="word-break:break-all">${esc(b.ref||'')}</small></div><span class="tag ${on?'ok':'live'}">${on?t('mOnline'):t('mOnsite')}</span></div>`}).join(''):`<p style="color:var(--muted)">—</p>`}
+   <hr style="border:none;border-top:1px solid var(--line);margin:12px 0">
+   <button class="btn green block" data-quiz="L1">${t('start')} (${t('mock')})</button>
+  </div></div>`;
+}
+
+/* ---------- CERTIFICATE ---------- */
+function pageCert(){
+ const total=LV.length,done=LV.filter(l=>S.progress[l.id]==='completed').length;const ready=done>=total;
+ const code=genCodeStable();
+ return H(t('certificate'),t('verifyAt')+' verify.html')+
+  (ready?`<div class="card" style="max-width:560px">
+    <div class="voucher" style="border-color:var(--sun)"><div class="qr">${qrBox(location.origin+'/verify.html?id='+code)}</div>
+     <div class="info"><div class="code">${code}</div><p style="color:var(--muted);font-size:.82rem;margin-top:6px">${esc(S.user.name)}</p>
+     <div class="send-row"><a href="verify.html?id=${code}" target="_blank">${t('verifyAt')}</a><a href="#" data-print-cert="${code}">${t('print')}</a></div></div></div>
+   </div>`:
+  `<div class="card" style="max-width:560px"><p style="color:var(--muted);line-height:1.7">${t('certNeed')}</p>
+    <div class="node" style="margin-top:10px"><div class="dot">${done}/${total}</div><div class="m"><h3>${t('levels')}</h3></div></div></div>`);
+}
+function genCodeStable(){let h=0;const s=S.user.id+S.user.name;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;const x=h.toString(36).toUpperCase().padStart(8,'0');return `WANE-${x.slice(0,4)}-${x.slice(4,8)}`}
+
+/* ---------- RULES (permissions) ---------- */
+function canEditRule(r){return S.user.role==='ADMIN' || (S.user.role==='TEACHER' && r.ownerId===S.user.id)}
+function pageRules(){
+ const isAdmin=S.user.role==='ADMIN';
+ const list=isAdmin?S.rules:S.rules; // admin sees all (incl. teacher-published); teacher sees all but edits own
+ return H(t('rules'),isAdmin?t('rulesAdmin'):t('rulesTeacher'))+`
+  <div class="card" style="margin-bottom:14px"><h3 style="margin-bottom:10px">${t('add')}</h3>
+   <div class="row"><div class="field" style="flex:1"><label>${t('dialect')}</label><select id="rule-dia">${[['ckb','سۆرانی'],['kmr','Kurmancî'],['diq','Zazakî']].map(d=>`<option value="${d[0]}">${d[1]}</option>`).join('')}</select></div></div>
+   <div class="field" style="margin-top:10px"><label>${t('ruleText')}</label><textarea id="rule-in" placeholder="Ergative: ..."></textarea></div>
+   <button class="btn" id="rule-add" style="margin-top:10px">${t('add')} + ${t('publish')}</button>
+  </div>
+  ${list.map(r=>{const editable=canEditRule(r);const editing=S.edit===r.id;const owned=r.ownerId===S.user.id;
+   return `<div class="card" style="margin-bottom:10px">
+    <div class="row" style="justify-content:space-between"><div><span class="tag blue">${r.dialect}</span> ${r.published?`<span class="tag ok">${t('published')}</span>`:`<span class="tag warn">${t('draft')}</span>`} ${r.clarifyRequested?`<span class="tag live">${t('clarifyAsked')}</span>`:''}</div>
+     <small style="color:var(--muted)">${t('owner')}: ${owned?t('mine'):esc(r.ownerName)}</small></div>
+    ${editing?`<textarea data-ed="${r.id}" style="margin-top:8px;min-height:60px">${esc(r.text)}</textarea>
+       ${isAdmin?`<div class="field" style="margin-top:8px"><label>${t('adminNote')}</label><input data-note="${r.id}" value="${esc(r.adminNote||'')}"></div>
+        <div class="field" style="margin-top:8px"><label>${t('editReason')}</label><input data-reason="${r.id}" value="${esc(r.editReason||'')}"></div>`:''}
+       <button class="btn green sm" data-saverule="${r.id}" style="margin-top:8px">${t('save')}</button>
+       <button class="btn ghost sm" data-cancelrule="1" style="margin-top:8px">${t('cancel')}</button>`
+     :`<div style="margin-top:8px">${smart(r.text)}</div>
+       ${r.adminNote?`<div style="margin-top:8px;padding:8px 10px;background:#fdf3da;border-radius:8px;font-size:.82rem"><b>${t('adminNote')}:</b> ${smart(r.adminNote)}${r.editReason?`<br><b>${t('editReason')}:</b> ${smart(r.editReason)}`:''}</div>`:''}
+       ${r.explanation?`<div style="margin-top:8px;padding:8px 10px;background:#e7f0fa;border-radius:8px;font-size:.82rem"><b>${t('explanation')}:</b> ${smart(r.explanation)}${(r.examples&&r.examples.length)?`<br><b>${t('examples')}:</b> ${r.examples.map(esc).join(' · ')}`:''}</div>`:''}
+       <div class="row" style="margin-top:8px">
+         ${editable?`<button class="btn ghost sm" data-editrule="${r.id}">${t('edit')}</button>`:`<span class="tag lock">${t('noEdit')}</span>`}
+         ${isAdmin?`<button class="btn sm" data-clarify="${r.id}">${t('reqClarify')}</button>`:''}
+         ${editable?`<button class="btn red sm" data-delrule="${r.id}">${t('delete')}</button>`:''}
+       </div>
+       ${(owned&&r.clarifyRequested&&S.user.role==='TEACHER')?`<div style="margin-top:10px;padding:10px;border:1.5px dashed var(--red);border-radius:10px">
+         <p style="font-weight:700;color:var(--red);font-size:.82rem;margin-bottom:6px">${t('needClarify')}</p>
+         <textarea data-explain="${r.id}" placeholder="${t('explain')}" style="min-height:54px">${esc(r.explanation||'')}</textarea>
+         <input data-examples="${r.id}" placeholder="${t('examples')} (a, b, c)" value="${esc((r.examples||[]).join(', '))}" style="width:100%;margin-top:6px;padding:8px;border:1.5px solid var(--line);border-radius:8px">
+         <button class="btn green sm" data-submitexplain="${r.id}" style="margin-top:8px">${t('submitExplain')}</button>
+       </div>`:''}`}
+   </div>`}).join('')}`;
+}
+
+/* ---------- VOUCHERS (admin) ---------- */
+function pageVouchers(){
+ const stock=S.vouchers.filter(v=>!v.ownerAgent&&v.status==='ACTIVE');
+ return H(t('vouchers'),t('vouchersH'))+`<div class="grid g3" style="margin-bottom:14px">
+   <div class="card stat"><div class="n">$${money(S.treasury.balance)}</div><div class="l">${t('cardRevenue')}</div></div>
+   <div class="card stat"><div class="n">$${money(S.treasury.issued)}</div><div class="l">${t('issued')}</div></div>
+   <div class="card stat"><div class="n">${stock.length}</div><div class="l">${t('availableStock')}</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+   <div class="row">
+     <div class="field" style="flex:1"><label>${t('amount')} (USD)</label><input id="v-amt" type="number" value="10" min="1"></div>
+     <div class="field" style="flex:1"><label>${t('qty')}</label><input id="v-qty" type="number" value="3" min="1" max="50"></div>
+     <button class="btn" id="v-gen" style="align-self:flex-end">${t('generate')}</button>
+   </div>
+   <p style="color:var(--muted);font-size:.78rem;margin-top:8px">${t('unlimitedMint')}</p>
+  </div>
+  ${S.vouchers.length?S.vouchers.map(v=>voucherCard(v)).join(''):`<div class="card"><p style="color:var(--muted)">—</p></div>`}`;
+}
+function voucherCard(v){
+ const redeemLink=location.origin+'/redeem?code='+v.code;
+ const msg=`Wane card ${v.code} — $${(v.amount).toFixed(2)} — ${redeemLink}`;
+ const enc=encodeURIComponent(msg);
+ const st=v.status==='ACTIVE'?'ok':v.status==='SOLD'?'blue':'lock';
+ const ag=v.ownerAgent?S.users.find(u=>u.id===v.ownerAgent):null;
+ return `<div class="voucher"><div class="qr">${qrBox(redeemLink)}</div>
+   <div class="info"><div class="code">${esc(v.code)}</div><div class="amt">$${v.amount.toFixed(2)} · <span class="tag ${st}">${t(v.status==='ACTIVE'?'active':v.status==='SOLD'?'sold':'redeemed')}</span> ${ag?`<span class="tag blue">${esc(ag.name)}</span>`:''}</div>
+    <div class="send-row">
+      <a href="sms:?&body=${enc}">${t('sendSms')}</a>
+      <a href="https://wa.me/?text=${enc}" target="_blank" rel="noopener">${t('sendWa')}</a>
+      <a href="mailto:?subject=Wane%20card&body=${enc}">${t('sendEmail')}</a>
+      <a href="#" data-print-voucher="${v.id}">${t('print')}</a>
+    </div>
+   </div></div>`;
+}
+
+/* ---------- AGENTS (admin) ---------- */
+function pageAgents(){
+ const pend=S.applications.filter(a=>a.status==='PENDING');
+ const agents=S.users.filter(u=>u.role==='AGENT');
+ return H(t('agents'),t('agentsH'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('pending')} (${pend.length})</h3>
+   ${pend.length?`<table><thead><tr><th>${t('name')}</th><th>${t('phone')}</th><th>${t('region')}</th><th></th></tr></thead><tbody>
+   ${pend.map(a=>`<tr><td><b>${esc(a.name)}</b></td><td>${esc(a.phone)}</td><td>${esc(a.region)}</td>
+     <td class="row"><button class="btn green sm" data-approve="${a.id}">${t('approve')}</button><button class="btn red sm" data-rejectapp="${a.id}">${t('reject')}</button></td></tr>`).join('')}
+   </tbody></table>`:`<p style="color:var(--muted)">—</p>`}
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('license')} (${S.licenses.length})</h3>
+   ${S.licenses.length?S.licenses.map(L=>{const signed=L.adminSigned&&L.agentSigned;
+     return `<div class="node" style="align-items:flex-start"><div class="dot">${signed?'✓':'✎'}</div><div class="m">
+       <h3 style="font-size:.95rem">${esc(L.agentName)}</h3>
+       <small style="display:block;color:var(--muted);line-height:1.5;margin:4px 0">${esc(L.terms)}</small>
+       <div class="row"><span class="tag ${L.adminSigned?'ok':'lock'}">${t('adminSigned')}${L.adminSigned?' ✓':''}</span>
+         <span class="tag ${L.agentSigned?'ok':'warn'}">${t('agentSigned')}${L.agentSigned?' ✓':''}</span>
+         <span class="tag ${signed?'ok':'warn'}">${signed?t('signed'):t('awaitingAgent')}</span></div>
+       <a href="#" data-print-license="${L.id}" class="btn ghost sm" style="margin-top:8px;display:inline-block">${t('print')}</a>
+     </div></div>`}).join(''):`<p style="color:var(--muted)">—</p>`}
+  </div></div>`;
+}
+
+/* ---------- AGENT: sell + sales ---------- */
+function pageSell(){
+ const mine=S.vouchers.filter(v=>v.ownerAgent===S.user.id && v.status==='ACTIVE');
+ return H(t('sell'),t('sellH'))+(mine.length?mine.map(v=>{
+   const redeemLink=location.origin+'/redeem?code='+v.code;const enc=encodeURIComponent(`Wane card ${v.code} — $${v.amount.toFixed(2)} — ${redeemLink}`);
+   return `<div class="voucher"><div class="qr">${qrBox(redeemLink)}</div><div class="info"><div class="code">${esc(v.code)}</div><div class="amt">$${v.amount.toFixed(2)}</div>
+     <div class="row" style="margin-top:8px"><input data-buyer="${v.id}" placeholder="${t('buyer')}" style="flex:1;padding:8px;border:1.5px solid var(--line);border-radius:8px"><button class="btn green sm" data-sell="${v.id}">${t('markSold')}</button></div>
+     <div class="send-row"><a href="sms:?&body=${enc}">${t('sendSms')}</a><a href="https://wa.me/?text=${enc}" target="_blank" rel="noopener">${t('sendWa')}</a><a href="mailto:?body=${enc}">${t('sendEmail')}</a></div>
+     <p style="color:var(--muted);font-size:.74rem;margin-top:6px">${t('commission')}</p></div></div>`}).join('')
+  :`<div class="card"><p style="color:var(--muted)">${t('noCards')}</p></div>`);
+}
+function pageSales(){
+ const sold=S.vouchers.filter(v=>v.ownerAgent===S.user.id && v.status==='SOLD');
+ return H(t('sales'))+`<div class="card"><table><thead><tr><th>${t('vouchers')}</th><th>${t('amount')}</th><th>${t('buyer')}</th><th>${t('status')}</th></tr></thead><tbody>
+  ${sold.length?sold.map(v=>`<tr><td>${esc(v.code)}</td><td>$${v.amount.toFixed(2)}</td><td>${esc(v.buyer||'')}</td><td><span class="tag blue">${t('sold')}</span></td></tr>`).join(''):`<tr><td colspan="4" style="color:var(--muted)">—</td></tr>`}
+ </tbody></table></div>`;
+}
+
+/* ---------- STUDENT: apply to be agent ---------- */
+function pageApply(){
+ const mine=S.applications.find(a=>a.userId===S.user.id);
+ return H(t('applyAgent'),t('applyH'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('becomeAgent')}</h3>
+   <div class="field"><label>${t('name')}</label><input id="ap-name" value="${esc(S.user.name)}"></div>
+   <div class="field" style="margin-top:10px"><label>${t('phone')}</label><input id="ap-phone" placeholder="+964..."></div>
+   <div class="field" style="margin-top:10px"><label>${t('region')}</label><input id="ap-region" placeholder="Hewlêr / Amed ..."></div>
+   <button class="btn block" id="ap-submit" style="margin-top:12px" ${mine&&mine.status==='PENDING'?'disabled':''}>${t('apply')}</button>
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('myApplication')}</h3>
+   ${mine?`<div class="node"><div class="dot">◈</div><div class="m"><h3>${esc(mine.name)}</h3><small>${esc(mine.phone)} · ${esc(mine.region)}</small></div>
+     <span class="tag ${mine.status==='APPROVED'?'ok':mine.status==='REJECTED'?'live':'warn'}">${t(mine.status.toLowerCase())}</span></div>`:`<p style="color:var(--muted)">—</p>`}
+  </div></div>`;
+}
+
+/* ---------- STUDIO (teacher curriculum + youtube) ---------- */
+function tplIc(id){const x=LESSON_TPL.find(t=>t.id===id);return x?x.ic:'▶'}
+function pageStudio(){
+ if(!S.user.approved)return H(t('studio'))+`<div class="card"><p style="color:var(--red)">${t('mustApprove')}</p><button class="btn" id="go-apply" style="margin-top:10px">${t('becomeTeacher')}</button></div>`;
+ return H(t('studio'),t('ytNote'))+`<div class="card" style="margin-bottom:14px">
+   <div class="row"><div class="field" style="flex:1"><label>${t('levelTitle')}</label><input id="lvl-title" placeholder="${t('levelTitle')}"></div><button class="btn" id="add-lvl" style="align-self:flex-end">${t('addLevel')}</button></div></div>
+  ${S.curriculum.map(c=>`<div class="card" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><b>${esc(c.title)}</b><span class="tag ok">${c.lessons.length} ${t('lessons')}</span></div>
+   ${c.lessons.map(le=>`<div class="node" style="margin-top:8px;display:block"><div class="row"><div class="dot" style="background:#0f1c1a;color:#fff">${tplIc(le.tpl)}</div><div class="m"><h3 style="font-size:.92rem">${esc(le.title)} <span class="tag lock">${le.tpl||'video'}</span></h3>${le.body?`<small>${esc(le.body)}</small>`:''}${le.yt?`<small style="display:block;word-break:break-all;color:var(--muted)">${esc(le.yt)}</small>`:''}</div></div></div>`).join('')}
+   <div class="card" style="margin-top:10px;background:#fbfaf6">
+     <div class="row"><input data-lt="${c.id}" placeholder="${t('lessonTitle')}" style="flex:2;padding:9px;border:1.5px solid var(--line);border-radius:8px">
+       <select data-tpl="${c.id}" style="flex:1;padding:9px;border:1.5px solid var(--line);border-radius:8px">${LESSON_TPL.map(tp=>`<option value="${tp.id}">${tp.ic} ${tp.n[S.lang]||tp.n.en}</option>`).join('')}</select></div>
+     <input data-yt="${c.id}" placeholder="${t('ytId')}" style="width:100%;margin-top:6px;padding:9px;border:1.5px solid var(--line);border-radius:8px">
+     <textarea data-body="${c.id}" placeholder="${t('lessonBody')}" style="margin-top:6px;min-height:54px"></textarea>
+     <button class="btn green sm" data-addles="${c.id}" style="margin-top:6px">${t('addLesson')}</button>
+   </div>
+  </div>`).join('')}`;
+}
+
+/* ---------- STUDENTS / SESSIONS / ANALYTICS ---------- */
+function pageStudents(){const rows=S.users.filter(u=>u.role==='STUDENT');
+ return H(t('students'))+`<div class="card"><table><thead><tr><th>${t('name')}</th><th>${t('dialect')}</th><th>${t('level')}</th></tr></thead><tbody>
+  ${rows.map((u,i)=>`<tr><td><b>${esc(u.name)}</b></td><td>${LANGS.find(l=>l.code===u.dialect)?.label||u.dialect}</td><td>${t('level')} ${(i%LV.length)+1}</td></tr>`).join('')}
+ </tbody></table></div>`;}
+function pageSessions(){
+ return H(t('sessions'),t('sessionsH'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('create')}</h3>
+   <div class="field"><label>${t('title')}</label><input id="ls-title" placeholder="Soranî — Conversation"></div>
+   <div class="field" style="margin-top:8px"><label>${t('platform')}</label><select id="ls-plat"><option>Google Meet</option><option>Zoom</option></select></div>
+   <div class="field" style="margin-top:8px"><label>${t('when')}</label><input id="ls-when" type="datetime-local"></div>
+   <div class="field" style="margin-top:8px"><label>${t('mins')}</label><input id="ls-dur" type="number" value="45"></div>
+   <button class="btn block" id="ls-create" style="margin-top:12px">${t('create')}</button></div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('sessions')}</h3>${S.sessions.map(s=>`<div class="node"><div class="dot">▶</div><div class="m"><h3 style="font-size:.95rem">${esc(s.title)}</h3><small><span class="tag live">${esc(s.platform)}</span> ${esc(s.when)}</small></div><a class="btn green sm" href="https://${esc(s.link)}" target="_blank" rel="noopener">${t('join')}</a></div>`).join('')}</div>
+ </div>`;
+}
+function pageAnalytics(){const errs=[{r:'Possessive suffix (Soranî)',p:68},{r:'Ergative case',p:54},{r:'Phonetics Ç/Ş',p:41}];
+ return H(t('analytics'),t('errTracker'))+`<div class="card">${errs.map(e=>`<div style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><b>${smart(e.r)}</b><span class="tag ${e.p>60?'live':'lock'}">${e.p}%</span></div><div class="node" style="padding:0;border:none;margin:6px 0 0"><div style="height:9px;width:100%;background:#eef1ec;border-radius:999px;overflow:hidden"><div style="height:100%;width:${e.p}%;background:${e.p>60?'var(--red)':'var(--sun-d)'}"></div></div></div></div>`).join('')}
+  <button class="btn ghost" id="bench">${t('benchmark')}</button></div>`;
+}
+
+/* ---------- WALLET (with voucher redeem) ---------- */
+function pageWallet(){const w=wallet(S.user.id);
+ return H(t('wallet'),`<span class="tag lock">${t('mock')}</span>`)+`<div class="grid g2"><div>
+  <div class="balance"><div class="arc"></div><div class="lab">${t('balance')}</div><div class="amt">$${money(w.balance)}</div></div>
+  <div class="card"><div class="field"><label>${t('redeem')}</label><div class="row"><input id="rdm" placeholder="${t('redeemCode')} (WANE-...)" style="flex:1;padding:10px;border:1.5px solid var(--line);border-radius:9px"><button class="btn green" id="rdm-go">${t('redeem')}</button></div></div></div>
+  <div class="card row" style="margin-top:12px">
+    <button class="btn green sm" data-wal="sub">${t('subscribe')}</button>
+    <button class="btn sm" data-wal="top">${t('topup')}</button>
+    <button class="btn ghost sm" data-wal="pay">${t('payout')}</button></div>
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('transactions')}</h3>
+   ${w.tx.length?`<table><tbody>${w.tx.map(x=>{const plus=x.amount>0;return `<tr><td>${t(x.type)}</td><td><small style="color:var(--muted)">${x.date}</small></td><td style="text-align:end;font-weight:800;color:${plus?'var(--ok)':'var(--red)'}">${plus?'+':'−'}$${money(Math.abs(x.amount))}</td></tr>`}).join('')}</tbody></table>`:`<p style="color:var(--muted)">${t('noTx')}</p>`}
+  </div></div>`;
+}
+function walletOp(kind){const w=wallet(S.user.id);const now=new Date().toISOString().slice(0,10);
+ if(kind==='sub'){if(w.balance<999){toast(t('topup'));return}w.balance-=999;w.tx.unshift({type:'SUBSCRIPTION',amount:-999,date:now})}
+ if(kind==='top'){w.balance+=2000;w.tx.unshift({type:'TOPUP',amount:2000,date:now})}
+ if(kind==='pay'){if(w.balance<=0){toast(t('noTx'));return}const a=w.balance;w.balance=0;w.tx.unshift({type:'PAYOUT',amount:-a,date:now})}
+ save();render();
+}
+function redeemVoucher(code){const v=S.vouchers.find(x=>x.code===(code||'').trim().toUpperCase());
+ if(!v){toast(t('bad'));return}if(v.status==='REDEEMED'){toast(t('redeemed'));return}
+ const w=wallet(S.user.id);w.balance+=Math.round(v.amount*100);w.tx.unshift({type:'VOUCHER',amount:Math.round(v.amount*100),date:new Date().toISOString().slice(0,10)});
+ if(v.status==='ACTIVE'&&v.ownerAgent){v.status='SOLD';v.buyer=S.user.email}else{v.status='REDEEMED'}
+ save();render();toast('+ $'+v.amount.toFixed(2));
+}
+
+function printCard(html){const a=document.getElementById('printArea');a.innerHTML=html;a.classList.remove('hide');window.print();setTimeout(()=>a.classList.add('hide'),300)}
+
+/* ---------- ADMIN: Accounts (suspend with reason) ---------- */
+function pageUsers(){
+ return H(t('users'),t('rulesAdmin'))+`<div class="card"><table><thead><tr><th>${t('name')}</th><th>${t('role')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+  ${S.users.map(u=>{const sus=u.status==='SUSPENDED';return `<tr><td><b>${esc(u.name)}</b><div><small style="color:var(--muted)">${esc(u.email)}</small></div>${sus&&u.reason?`<div><small style="color:var(--red)">${esc(u.reason)}</small></div>`:''}</td>
+    <td><span class="tag" style="background:${RC[u.role]};color:#fff">${t(u.role.toLowerCase())}</span></td>
+    <td><span class="tag ${sus?'live':'ok'}">${sus?t('suspended'):t('active2')}</span></td>
+    <td>${u.role==='ADMIN'?'':(sus?`<button class="btn green sm" data-activate="${u.id}">${t('activate')}</button>`:`<button class="btn red sm" data-suspend="${u.id}">${t('suspend')}</button>`)}</td></tr>`}).join('')}
+ </tbody></table></div>`;
+}
+/* ---------- ADMIN: Treasury (prepare balance for printing cards) ---------- */
+function pageTreasury(){
+ const sold=S.vouchers.filter(v=>v.ownerAgent).length;
+ return H(t('treasury'),t('cardRevenue'))+`<div class="grid g3" style="margin-bottom:14px">
+   <div class="card stat"><div class="n">$${money(S.treasury.balance)}</div><div class="l">${t('cardRevenue')}</div></div>
+   <div class="card stat"><div class="n">$${money(S.treasury.issued)}</div><div class="l">${t('issued')}</div></div>
+   <div class="card stat"><div class="n">${sold}</div><div class="l">${t('buy')}</div></div></div>
+  <div class="card"><p style="color:var(--muted);font-size:.85rem">${t('unlimitedMint')} ${t('onlyFromAdmin')}</p></div>`;
+}
+/* ---------- AGENT: Buy cards from admin only ---------- */
+function pageBuy(){
+ const stock=S.vouchers.filter(v=>!v.ownerAgent&&v.status==='ACTIVE');
+ const w=wallet(S.user.id);
+ return H(t('buy'),t('onlyFromAdmin'))+`<div class="balance" style="max-width:420px"><div class="arc"></div><div class="lab">${t('balance')}</div><div class="amt">$${money(w.balance)}</div></div>
+  <p style="color:var(--muted);font-size:.85rem;margin-bottom:10px">${t('wholesale')}: ${S.wholesalePct}% — ${t('availableStock')}: ${stock.length}</p>
+  ${stock.length?stock.map(v=>{const price=Math.round(v.amount*100*S.wholesalePct/100);return `<div class="voucher"><div class="qr">${qrBox(location.origin+'/redeem?code='+v.code)}</div>
+    <div class="info"><div class="code">${esc(v.code)}</div><div class="amt">${t('amount')}: $${v.amount.toFixed(2)} · ${t('wholesale')}: $${money(price)}</div>
+    <button class="btn green sm" data-buycard="${v.id}" style="margin-top:8px" ${w.balance<price?'disabled':''}>${t('buyNow')} ($${money(price)})</button></div></div>`}).join(''):`<div class="card"><p style="color:var(--muted)">${t('noCards')}</p></div>`}`;
+}
+/* ---------- TEACHER courses (curriculum-gated) + STUDENT browse/buy ---------- */
+function teacherHasCurriculum(tid){return S.curriculum.some(c=>c.lessons.length>0)}
+function courseQuizzes(cid){return S.quizzes.filter(q=>q.courseId===cid)}
+function pageCourses(){
+ if(S.user.role==='TEACHER'){const mine=S.courses.filter(c=>c.teacherId===S.user.id);const ready=teacherHasCurriculum(S.user.id)&&S.user.approved;
+  return H(t('courses'),S.user.approved?'':t('mustApprove'))+`
+   <div class="card" style="margin-bottom:14px"><div class="row">
+     <div class="field" style="flex:2"><label>${t('courseTitle')}</label><input id="co-title" placeholder="${t('courseTitle')}"></div>
+     <div class="field" style="flex:1"><label>${t('subject')}</label><select id="co-sub">${SUBJECTS.map(s=>`<option value="${s.id}">${subjName(s.id)}</option>`).join('')}</select></div>
+     <div class="field" style="flex:1"><label>${t('price')} (USD)</label><input id="co-price" type="number" value="20" min="1"></div>
+     <button class="btn" id="co-create" style="align-self:flex-end">${t('createCourse')}</button></div>
+     ${ready?'':`<p style="color:var(--red);font-size:.82rem;margin-top:8px">⚠ ${S.user.approved?t('curriculumReq'):t('mustApprove')}</p>`}</div>
+   ${mine.length?mine.map(c=>`<div class="card" style="margin-bottom:10px"><div class="row" style="justify-content:space-between">
+     <div><b>${esc(c.title)}</b> <span class="tag blue">${subjName(c.subject)}</span> · <span class="amt" style="color:var(--green);font-weight:800">$${c.price.toFixed(2)}</span></div>
+     <div>${c.published?`<span class="tag ok">${t('published')}</span>`:(ready?`<button class="btn green sm" data-pubcourse="${c.id}">${t('publishCourse')}</button>`:`<span class="tag lock">${t('noCurriculum')}</span>`)}</div></div>
+     <div style="margin-top:6px"><small style="color:var(--muted)">${t('sold')}: ${S.sales.filter(s=>s.courseId===c.id).length} · ${courseQuizzes(c.id).length} ${t('quizzes')}</small></div></div>`).join(''):`<div class="card"><p style="color:var(--muted)">—</p></div>`}`;
+ }
+ // STUDENT — taking a quiz
+ if(S.cq){return renderCourseQuiz();}
+ const term=(S.q.course||'').toLowerCase();const sub=S.q.cSubject;const max=parseFloat(S.q.cMax)||Infinity;const w=wallet(S.user.id);
+ let published=S.courses.filter(c=>c.published);
+ if(term)published=published.filter(c=>c.title.toLowerCase().includes(term));
+ if(sub)published=published.filter(c=>c.subject===sub);
+ published=published.filter(c=>c.price<=max);
+ return H(t('courses'),t('browseCourses'))+`
+  <div class="card" style="margin-bottom:14px"><div class="row">
+    <input id="q-course" placeholder="${t('searchCourse')}" value="${esc(S.q.course)}" style="flex:2;padding:10px;border:1.5px solid var(--line);border-radius:9px">
+    <select id="q-csub" style="flex:1;padding:10px;border:1.5px solid var(--line);border-radius:9px"><option value="">${t('allSubjects')}</option>${SUBJECTS.map(s=>`<option value="${s.id}" ${sub===s.id?'selected':''}>${subjName(s.id)}</option>`).join('')}</select>
+    <input id="q-cmax" type="number" placeholder="${t('maxPrice')}" value="${esc(S.q.cMax)}" style="width:120px;padding:10px;border:1.5px solid var(--line);border-radius:9px">
+    <button class="btn" id="q-cclear">${t('clear')}</button>
+  </div></div>
+  ${published.length?published.map(c=>{const teacher=S.users.find(u=>u.id===c.teacherId);const enr=S.enrollments.find(e=>e.courseId===c.id&&e.studentId===S.user.id);const bought=S.sales.find(s=>s.courseId===c.id&&s.studentId===S.user.id);const qz=courseQuizzes(c.id);
+   return `<div class="card" style="margin-bottom:10px"><div class="row" style="justify-content:space-between">
+     <div><b>${esc(c.title)}</b> <span class="tag blue">${subjName(c.subject)}</span><div><small style="color:var(--muted)">${esc(teacher?teacher.name:'')}</small></div></div>
+     <div class="amt" style="color:var(--green);font-weight:800">$${c.price.toFixed(2)}</div></div>
+    <div class="row" style="margin-top:8px">
+     ${bought?`<span class="tag ok">${t('confirmed')}</span>${qz.map(q=>{const att=S.attempts.find(a=>a.quizId===q.id&&a.studentId===S.user.id);return `<button class="btn ${att?'ghost':'green'} sm" data-takequiz="${q.id}">${esc(q.title)}${att?` · ${att.score}/${att.total}`:''}</button>`}).join('')}`
+      :enr?`<span class="tag warn">${t('pendingEnroll')}</span><button class="btn green sm" data-buycourse="${c.id}" ${w.balance<Math.round(c.price*100)?'disabled':''}>${t('buyCourse')} (${t('fromWallet')})</button>`
+       :`<button class="btn sm" data-enroll="${c.id}">${t('enroll')}</button>`}
+    </div></div>`}).join(''):`<div class="card"><p style="color:var(--muted)">${t('noResults')}</p></div>`}`;
+}
+function renderCourseQuiz(){
+ const qz=S.quizzes.find(x=>x.id===S.cq.quizId);if(!qz){S.cq=null;return pageCourses();}
+ const cq=S.cq;
+ if(cq.done){const tot=qz.questions.reduce((s,q)=>s+q.marks,0);
+   return H(qz.title,t('result'))+`<div class="card" style="max-width:520px;text-align:center"><div style="font-size:2.6rem">${cq.score>=tot*0.6?'🎉':'📚'}</div>
+    <h2 style="margin:8px 0">${t('yourScore')}: ${cq.score} / ${tot}</h2><button class="btn" id="cq-close">OK</button></div>`}
+ const it=qz.questions[cq.i];
+ return H(qz.title,`${cq.i+1}/${qz.questions.length}`)+`<div class="card" style="max-width:560px"><h2 style="font-size:1.1rem;margin-bottom:12px">${smart(it.q)}</h2>
+  ${it.options.map((o,i)=>`<button class="node ${cq.picked[cq.i]===i?'unlocked':''}" style="width:100%;text-align:start" data-cqo="${i}"><div class="m"><h3 style="font-size:.95rem">${smart(o)}</h3></div></button>`).join('')}
+  <button class="btn green block" id="cq-next" ${cq.picked[cq.i]==null?'disabled':''}>${cq.i+1<qz.questions.length?'→':'✓'}</button></div>`;
+}
+/* ---------- TEACHER: accept students + confirm sales ---------- */
+function pageEnrollments(){
+ const myCourses=S.courses.filter(c=>c.teacherId===S.user.id).map(c=>c.id);
+ const pend=S.enrollments.filter(e=>myCourses.includes(e.courseId)&&e.status==='PENDING');
+ const sales=S.sales.filter(s=>myCourses.includes(s.courseId));
+ return H(t('enrollments'),t('platformShare')+' '+S.platformPct+'%')+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('pending')} (${pend.length})</h3>
+   ${pend.length?pend.map(e=>{const c=S.courses.find(x=>x.id===e.courseId);const st=S.users.find(u=>u.id===e.studentId);
+     return `<div class="node"><div class="dot">◉</div><div class="m"><h3 style="font-size:.95rem">${esc(st?st.name:'')}</h3><small>${esc(c?c.title:'')}</small></div>
+       <button class="btn green sm" data-accept="${e.id}">${t('accept')}</button></div>`}).join(''):`<p style="color:var(--muted)">—</p>`}
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('sales')} (${sales.length})</h3>
+   <table><thead><tr><th>${t('courseTitle')}</th><th>${t('amount')}</th><th>${t('teacherGets')}</th><th></th></tr></thead><tbody>
+   ${sales.length?sales.map(s=>{const c=S.courses.find(x=>x.id===s.courseId);return `<tr><td>${esc(c?c.title:'')}</td><td>$${money(s.amount)}</td><td style="color:var(--ok);font-weight:700">$${money(s.amount-s.commission)}</td><td>${s.method==='cash'?`<span class="tag warn">${t('cash')}</span>`:`<span class="tag ok">${t('confirmed')}</span>`}</td></tr>`}).join(''):`<tr><td colspan="4" style="color:var(--muted)">—</td></tr>`}
+   </tbody></table>
+   <div class="row" style="margin-top:10px"><select id="cash-course" style="flex:1;padding:8px;border:1.5px solid var(--line);border-radius:8px">${S.courses.filter(c=>c.teacherId===S.user.id).map(c=>`<option value="${c.id}">${esc(c.title)} ($${c.price})</option>`).join('')}</select><button class="btn sm" id="cash-sell">${t('cash')} ${t('sellCourse')}</button></div>
+  </div></div>`;
+}
+
+/* ---------- STUDENT: find teachers (search + filter) ---------- */
+function pageTeachers(){
+ const term=(S.q.teacher||'').toLowerCase();const sub=S.q.tSubject;
+ let list=S.users.filter(u=>u.role==='TEACHER'&&u.approved);
+ if(term)list=list.filter(u=>u.name.toLowerCase().includes(term));
+ if(sub)list=list.filter(u=>(u.subjects||[]).includes(sub));
+ return H(t('teachers'),'')+`
+  <div class="card" style="margin-bottom:14px"><div class="row">
+    <input id="q-teacher" placeholder="${t('searchTeacher')}" value="${esc(S.q.teacher)}" style="flex:2;padding:10px;border:1.5px solid var(--line);border-radius:9px">
+    <select id="q-tsub" style="flex:1;padding:10px;border:1.5px solid var(--line);border-radius:9px"><option value="">${t('allSubjects')}</option>${SUBJECTS.map(s=>`<option value="${s.id}" ${sub===s.id?'selected':''}>${subjName(s.id)}</option>`).join('')}</select>
+    <button class="btn" id="q-tclear">${t('clear')}</button>
+  </div></div>
+  ${list.length?`<div class="grid g2">${list.map(u=>{const cnt=S.courses.filter(c=>c.teacherId===u.id&&c.published).length;
+    return `<div class="card"><div class="row"><span class="av" style="width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;background:${RC.TEACHER}">${esc(u.name[0])}</span>
+      <div><b>${esc(u.name)}</b><div><small style="color:var(--muted)">${(u.subjects||[]).map(subjName).join(' · ')}</small></div></div></div>
+      ${u.bio?`<p style="color:var(--muted);font-size:.84rem;margin-top:8px">${esc(u.bio)}</p>`:''}
+      <div style="margin-top:8px"><span class="tag ok">${cnt} ${t('courses')}</span></div></div>`}).join('')}</div>`:`<div class="card"><p style="color:var(--muted)">${t('noResults')}</p></div>`}`;
+}
+
+/* ---------- AI-assisted draft question (rule-based fallback) ---------- */
+function aiDraft(dialect){
+ const pool=[
+  {q:'Min nan ____ . (xwarin → borî)',options:['xwar','dixwim','bixwe','xwarin'],answer:0,marks:5},
+  {q:'وشەی ڕاست بۆ «مامۆستا»:',options:['مامۆستا','خوێندکار','پەرتووک','قوتابخانە'],answer:0,marks:5},
+  {q:'Ergative subject in past transitive:',options:['Ez','Min','Tu','Em'],answer:1,marks:5},
+  {q:'Hejmara "pênc" =',options:['four','five','six','seven'],answer:1,marks:5},
+ ];
+ return pool[Math.floor(Math.random()*pool.length)];
+}
+
+/* ---------- TEACHER: assessments (quizzes) builder ---------- */
+function pageQuizzes(){
+ if(!S.user.approved)return H(t('quizzes'))+`<div class="card"><p style="color:var(--red)">${t('mustApprove')}</p></div>`;
+ const myCourses=S.courses.filter(c=>c.teacherId===S.user.id);
+ const draft=S._qdraft||(S._qdraft={courseId:myCourses[0]?myCourses[0].id:'',title:'',questions:[]});
+ return H(t('quizzes'),t('result'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('addQuiz')}</h3>
+   <div class="field"><label>${t('pickCourse')}</label><select id="q-course">${myCourses.map(c=>`<option value="${c.id}" ${draft.courseId===c.id?'selected':''}>${esc(c.title)}</option>`).join('')||`<option value="">—</option>`}</select></div>
+   <div class="field" style="margin-top:8px"><label>${t('quizTitle')}</label><input id="q-title" value="${esc(draft.title)}"></div>
+   <div style="margin-top:10px">${draft.questions.map((q,i)=>`<div class="node" style="display:block"><b>${i+1}. ${esc(q.q)}</b><div style="margin-top:4px">${q.options.map((o,j)=>`<span class="tag ${j===q.answer?'ok':'lock'}" style="margin:2px">${esc(o)}</span>`).join('')}</div><small style="color:var(--muted)">${t('marks')}: ${q.marks}</small></div>`).join('')}</div>
+   <div class="card" style="margin-top:10px;background:#fbfaf6">
+     <input id="nq-q" placeholder="${t('question')}" style="width:100%;padding:8px;border:1.5px solid var(--line);border-radius:8px">
+     ${[0,1,2,3].map(j=>`<div class="row" style="margin-top:6px"><input id="nq-o${j}" placeholder="${t('option')} ${j+1}" style="flex:1;padding:8px;border:1.5px solid var(--line);border-radius:8px"><label style="font-size:.78rem"><input type="radio" name="nq-a" value="${j}" ${j===0?'checked':''}> ${t('correct')}</label></div>`).join('')}
+     <div class="row" style="margin-top:6px"><input id="nq-m" type="number" value="5" min="1" style="width:90px;padding:8px;border:1.5px solid var(--line);border-radius:8px" placeholder="${t('marks')}"><button class="btn ghost sm" id="nq-ai">${t('aiAssist')}</button><button class="btn sm" id="nq-add">${t('addQuestion')}</button></div>
+     <p style="color:var(--muted);font-size:.72rem;margin-top:6px">${t('aiNote')}</p>
+   </div>
+   <button class="btn green block" id="q-save" style="margin-top:10px" ${draft.questions.length&&draft.courseId?'':'disabled'}>${t('saveQuiz')}</button>
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('quizzes')}</h3>
+   ${S.quizzes.filter(qz=>myCourses.find(c=>c.id===qz.courseId)).map(qz=>{const c=S.courses.find(x=>x.id===qz.courseId);const tot=qz.questions.reduce((s,q)=>s+q.marks,0);
+     return `<div class="node"><div class="dot">✎</div><div class="m"><h3 style="font-size:.95rem">${esc(qz.title)}</h3><small>${esc(c?c.title:'')} · ${qz.questions.length} Q · ${tot} ${t('marks')}</small></div></div>`}).join('')||`<p style="color:var(--muted)">—</p>`}
+  </div></div>`;
+}
+
+/* ---------- TEACHER (committee member): propose exam questions ---------- */
+function pageCommittee(){
+ const mine=S.committees.filter(c=>c.memberIds.includes(S.user.id));
+ if(!mine.length)return H(t('committee'))+`<div class="card"><p style="color:var(--muted)">—</p></div>`;
+ return H(t('committee'),t('committeeNote'))+mine.map(c=>{
+  const qs=S.examBank.filter(q=>q.committeeId===c.id);
+  return `<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><b>${esc(c.name)}</b><span class="tag blue">${c.dialect}</span></div>
+   <div class="card" style="margin-top:10px;background:#fbfaf6">
+     <input id="cq-q-${c.id}" placeholder="${t('question')}" style="width:100%;padding:8px;border:1.5px solid var(--line);border-radius:8px">
+     ${[0,1,2,3].map(j=>`<div class="row" style="margin-top:6px"><input id="cq-o${j}-${c.id}" placeholder="${t('option')} ${j+1}" style="flex:1;padding:8px;border:1.5px solid var(--line);border-radius:8px"><label style="font-size:.78rem"><input type="radio" name="cq-a-${c.id}" value="${j}" ${j===0?'checked':''}> ${t('correct')}</label></div>`).join('')}
+     <div class="row" style="margin-top:6px"><input id="cq-m-${c.id}" type="number" value="5" min="1" style="width:90px;padding:8px;border:1.5px solid var(--line);border-radius:8px"><button class="btn ghost sm" data-cqai="${c.id}">${t('aiAssist')}</button><button class="btn sm" data-cqadd="${c.id}">${t('proposeQ')}</button></div>
+   </div>
+   <div style="margin-top:10px">${qs.map(q=>`<div class="node" style="display:block"><div class="row" style="justify-content:space-between"><b style="font-size:.9rem">${esc(q.q)}</b><span class="tag ${q.status==='APPROVED'?'ok':'warn'}">${q.status==='APPROVED'?t('approvedQ'):t('proposed')}</span></div></div>`).join('')||`<p style="color:var(--muted);font-size:.85rem">—</p>`}</div>
+  </div>`}).join('');
+}
+
+/* ---------- ADMIN: exam committees ---------- */
+function pageCommittees(){
+ const teachers=S.users.filter(u=>u.role==='TEACHER'&&u.approved);
+ return H(t('committees'),t('committeeNote'))+`<div class="card" style="margin-bottom:14px"><h3 style="margin-bottom:10px">${t('createCommittee')}</h3>
+   <div class="row"><div class="field" style="flex:2"><label>${t('committeeName')}</label><input id="cm-name" placeholder="Soranî B1 board"></div>
+    <div class="field" style="flex:1"><label>${t('dialect')}</label><select id="cm-dia">${[['ckb','سۆرانی'],['kmr','Kurmancî'],['diq','Zazakî']].map(d=>`<option value="${d[0]}">${d[1]}</option>`).join('')}</select></div></div>
+   <div class="field" style="margin-top:8px"><label>${t('assign')}</label><div class="row">${teachers.map(tt=>`<label class="tag lock" style="cursor:pointer"><input type="checkbox" class="cm-mem" value="${tt.id}"> ${esc(tt.name)}</label>`).join('')||`<small style="color:var(--muted)">—</small>`}</div></div>
+   <button class="btn block" id="cm-create" style="margin-top:10px">${t('createCommittee')}</button></div>
+  ${S.committees.map(c=>{const qs=S.examBank.filter(q=>q.committeeId===c.id);const prop=qs.filter(q=>q.status==='PROPOSED');
+   return `<div class="card" style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><b>${esc(c.name)}</b><span class="tag blue">${c.dialect}</span></div>
+    <div style="margin-top:6px"><small style="color:var(--muted)">${t('members')}: ${c.memberIds.map(id=>{const u=S.users.find(x=>x.id===id);return u?esc(u.name):''}).join(' · ')}</small></div>
+    <div style="margin-top:8px"><span class="tag ok">${qs.filter(q=>q.status==='APPROVED').length} ${t('approvedQ')}</span> <span class="tag warn">${prop.length} ${t('proposed')}</span></div>
+    ${prop.map(q=>`<div class="node" style="display:block;margin-top:8px"><div class="row" style="justify-content:space-between"><b style="font-size:.9rem">${esc(q.q)}</b><button class="btn green sm" data-approveq="${q.id}">${t('approveQ')}</button></div><div style="margin-top:4px">${q.options.map((o,j)=>`<span class="tag ${j===q.answer?'ok':'lock'}" style="margin:2px">${esc(o)}</span>`).join('')}</div></div>`).join('')}
+   </div>`}).join('')||`<div class="card"><p style="color:var(--muted)">—</p></div>`}`;
+}
+
+/* ---------- ADMIN: teacher applications (professional file + certs) ---------- */
+function pageTeacherApps(){
+ const pend=S.teacherApps.filter(a=>a.status==='PENDING');
+ return H(t('teacherApps'),'')+`${pend.length?pend.map(a=>`<div class="card" style="margin-bottom:12px">
+   <div class="row" style="justify-content:space-between"><b>${esc(a.name)}</b><span class="tag warn">${t('pending')}</span></div>
+   <p style="margin-top:6px;font-size:.85rem"><b>${t('expertise')}:</b> ${(a.subjects||[]).map(subjName).join(' · ')}</p>
+   <p style="font-size:.85rem"><b>${t('bio')}:</b> ${esc(a.bio||'')}</p>
+   <p style="font-size:.85rem"><b>${t('experience')}:</b> ${esc(a.experience||'')}</p>
+   <p style="font-size:.85rem"><b>${t('certs')}:</b> ${(a.certs||[]).map(c=>`<span class="tag blue" style="margin:2px">${esc(c)}</span>`).join('')||'—'}</p>
+   <div class="row" style="margin-top:8px"><button class="btn green sm" data-tapprove="${a.id}">${t('approveTeacher')}</button><button class="btn red sm" data-treject="${a.id}">${t('reject')}</button></div>
+  </div>`).join(''):`<div class="card"><p style="color:var(--muted)">—</p></div>`}`;
+}
+
+/* ---------- STUDENT: apply to teach ---------- */
+function pageBecomeTeacher(){
+ const mine=S.teacherApps.find(a=>a.userId===S.user.id);
+ return H(t('becomeTeacher'),t('applyTeach'))+`<div class="grid g2">
+  <div class="card"><h3 style="margin-bottom:10px">${t('applyTeach')}</h3>
+   <div class="field"><label>${t('subjectsTeach')}</label><div class="row">${SUBJECTS.map(s=>`<label class="tag lock" style="cursor:pointer"><input type="checkbox" class="ta-sub" value="${s.id}"> ${subjName(s.id)}</label>`).join('')}</div></div>
+   <div class="field" style="margin-top:8px"><label>${t('bio')}</label><textarea id="ta-bio" style="min-height:60px"></textarea></div>
+   <div class="field" style="margin-top:8px"><label>${t('experience')}</label><input id="ta-exp" placeholder="5y ..."></div>
+   <div class="field" style="margin-top:8px"><label>${t('certs')}</label><input id="ta-cert" type="file" multiple></div>
+   <button class="btn block" id="ta-submit" style="margin-top:12px" ${mine&&mine.status==='PENDING'?'disabled':''}>${t('submitApp')}</button>
+  </div>
+  <div class="card"><h3 style="margin-bottom:10px">${t('myApplication')}</h3>
+   ${mine?`<div class="node"><div class="dot">✦</div><div class="m"><h3 style="font-size:.95rem">${(mine.subjects||[]).map(subjName).join(' · ')}</h3><small>${(mine.certs||[]).length} ${t('certs')}</small></div><span class="tag ${mine.status==='APPROVED'?'ok':mine.status==='REJECTED'?'live':'warn'}">${t(mine.status==='APPROVED'?'approved':mine.status==='REJECTED'?'rejected':'pending')}</span></div>`:`<p style="color:var(--muted)">${t('appUnderReview')&&'—'}</p>`}
+  </div></div>`;
+}
+
+function bind(){
+ const $=id=>document.getElementById(id);
+ const lg=$('lang');if(lg)lg.onchange=e=>{S.lang=e.target.value;save();render()};
+ if($('go')){const go=()=>{const e=($('email').value||'').trim().toLowerCase(),p=$('pass').value||'';const u=S.users.find(x=>x.email.toLowerCase()===e&&x.pass===p);if(!u){$('err').textContent=t('bad');return}S.user={id:u.id,name:u.name,email:u.email,role:u.role,dialect:u.dialect};S.lang=u.dialect;S.view='dash';save();render();toast(`${t('welcome')} · ${u.name}`)};$('go').onclick=go;$('pass').onkeydown=ev=>{if(ev.key==='Enter')go()};document.querySelectorAll('.demo-card').forEach(b=>b.onclick=()=>{$('email').value=b.dataset.e;$('pass').value=b.dataset.p;go()})}
+ if($('logout'))$('logout').onclick=()=>{S.user=null;S.quiz=null;S.edit=null;save();render()};
+ if($('net'))$('net').onclick=()=>{S.online=!S.online;render()};
+ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{S.view=b.dataset.view;S.quiz=null;S.cq=null;S.edit=null;render()});
+ // learn/quiz
+ document.querySelectorAll('[data-quiz]').forEach(b=>b.onclick=()=>{if(b.disabled)return;S.quiz={level:b.dataset.quiz,items:genQ(),i:0,picked:[],done:false,rev:false};S.view=(S.user.role==='STUDENT'&&S.view==='exam')?'exam':'learn';render()});
+ const Q=S.quiz;if(Q&&!Q.done){document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{if(Q.rev)return;Q.picked[Q.i]=+b.dataset.o;render()});if($('qsub'))$('qsub').onclick=()=>{Q.rev=true;render()};if($('qnext'))$('qnext').onclick=()=>{Q.rev=false;if(Q.i+1<Q.items.length){Q.i++;render()}else finishQuiz()}}
+ if($('qback'))$('qback').onclick=()=>{S.quiz=null;render()};
+ // exam booking
+ document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{S.examMode=b.dataset.mode;save();render()});
+ document.querySelectorAll('[data-bookslot]').forEach(b=>b.onclick=()=>{const sl=S.slots.find(x=>x.id===b.dataset.bookslot);if(!sl||sl.booked>=sl.seats)return;sl.booked++;const mode=S.examMode;const ref=mode==='online'?('meet.google.com/'+Math.random().toString(36).slice(2,5)+'-'+Math.random().toString(36).slice(2,6)):(EXAM_CENTERS[S.lang]||EXAM_CENTERS.en);S.bookings.push({id:'b'+Date.now(),slotId:sl.id,mode,ref});save();render();toast(t('booked'))});
+ document.querySelectorAll('[data-unbook]').forEach(b=>b.onclick=()=>{const sl=S.slots.find(x=>x.id===b.dataset.unbook);if(sl&&sl.booked>0)sl.booked--;S.bookings=S.bookings.filter(x=>x.slotId!==b.dataset.unbook);save();render()});
+ // rules
+ if($('rule-add'))$('rule-add').onclick=()=>{const txt=($('rule-in').value||'').trim();if(!txt)return;S.rules.unshift({id:'r'+Date.now(),dialect:$('rule-dia').value,text:txt,ownerId:S.user.id,ownerName:S.user.name,published:true});save();render();toast(t('add'))};
+ document.querySelectorAll('[data-editrule]').forEach(b=>b.onclick=()=>{S.edit=b.dataset.editrule;render()});
+ document.querySelectorAll('[data-saverule]').forEach(b=>b.onclick=()=>{const id=b.dataset.saverule;const r=S.rules.find(x=>x.id===id);if(!canEditRule(r))return;const ta=document.querySelector(`[data-ed="${id}"]`);r.text=ta.value;if(S.user.role==='ADMIN'){const nt=document.querySelector(`[data-note="${id}"]`);const rs=document.querySelector(`[data-reason="${id}"]`);if(nt)r.adminNote=nt.value.trim();if(rs)r.editReason=rs.value.trim();}S.edit=null;save();render();toast(t('save'))});
+ document.querySelectorAll('[data-cancelrule]').forEach(b=>b.onclick=()=>{S.edit=null;render()});
+ document.querySelectorAll('[data-clarify]').forEach(b=>b.onclick=()=>{const r=S.rules.find(x=>x.id===b.dataset.clarify);r.clarifyRequested=true;save();render();toast(t('reqClarify')+' ✓')});
+ document.querySelectorAll('[data-submitexplain]').forEach(b=>b.onclick=()=>{const id=b.dataset.submitexplain;const r=S.rules.find(x=>x.id===id);const ex=document.querySelector(`[data-explain="${id}"]`).value.trim();const exs=(document.querySelector(`[data-examples="${id}"]`).value||'').split(',').map(s=>s.trim()).filter(Boolean);r.explanation=ex;r.examples=exs;r.clarifyRequested=false;save();render();toast(t('submitExplain')+' ✓')});
+ document.querySelectorAll('[data-delrule]').forEach(b=>b.onclick=()=>{const r=S.rules.find(x=>x.id===b.dataset.delrule);if(!canEditRule(r))return;S.rules=S.rules.filter(x=>x.id!==b.dataset.delrule);save();render()});
+ // vouchers
+ if($('v-gen'))$('v-gen').onclick=()=>{const amt=Math.max(1,+$('v-amt').value||10);const qty=Math.max(1,Math.min(50,+$('v-qty').value||1));S.treasury.issued+=Math.round(amt*qty*100);for(let i=0;i<qty;i++)S.vouchers.unshift({id:'v'+Date.now()+i,code:genCode(),amount:amt,status:'ACTIVE',ownerAgent:null,buyer:null,createdBy:S.user.id});save();render();toast(t('generate')+' ✓')};
+ document.querySelectorAll('[data-doalloc]').forEach(b=>b.onclick=()=>{const id=b.dataset.doalloc;const sel=document.querySelector(`[data-alloc="${id}"]`);const v=S.vouchers.find(x=>x.id===id);v.ownerAgent=sel.value||null;save();render();toast(t('allocate')+' ✓')});
+ document.querySelectorAll('[data-print-voucher]').forEach(b=>b.onclick=(e)=>{e.preventDefault();const v=S.vouchers.find(x=>x.id===b.dataset.printVoucher);const link=location.origin+'/redeem?code='+v.code;printCard(`<div style="text-align:center"><h1>Wane — $${v.amount.toFixed(2)}</h1><img src="${qrDataUrl(link)||''}" style="width:200px"><h2 style="letter-spacing:2px">${v.code}</h2><p>${link}</p></div>`)});
+ document.querySelectorAll('[data-print-cert]').forEach(b=>b.onclick=(e)=>{e.preventDefault();const code=b.dataset.printCert;const link=location.origin+'/verify.html?id='+code;printCard(`<div style="text-align:center;border:6px solid #f5c542;padding:40px"><h1>Wane Academy</h1><h2>Certificate</h2><h3>${esc(S.user.name)}</h3><img src="${qrDataUrl(link)||''}" style="width:160px"><p>${code}</p></div>`)});
+ // agents
+ document.querySelectorAll('[data-approve]').forEach(b=>b.onclick=()=>{const a=S.applications.find(x=>x.id===b.dataset.approve);a.status='APPROVED';const u=S.users.find(x=>x.id===a.userId);if(u)u.role='AGENT';if(u&&!S.licenses.find(L=>L.agentId===u.id))S.licenses.push({id:'lic'+Date.now(),agentId:u.id,agentName:u.name,terms:t('licenseTerms'),adminSigned:true,agentSigned:false,signedAt:null});save();render();toast(t('approve')+' ✓')});
+ document.querySelectorAll('[data-rejectapp]').forEach(b=>b.onclick=()=>{const a=S.applications.find(x=>x.id===b.dataset.rejectapp);a.status='REJECTED';save();render()});
+ // apply
+ if($('ap-submit'))$('ap-submit').onclick=()=>{const name=($('ap-name').value||'').trim(),phone=($('ap-phone').value||'').trim(),region=($('ap-region').value||'').trim();if(!name||!phone){toast(t('bad'));return}const ex=S.applications.find(a=>a.userId===S.user.id);if(ex){ex.name=name;ex.phone=phone;ex.region=region;ex.status='PENDING'}else S.applications.push({id:'ap'+Date.now(),userId:S.user.id,name,phone,region,status:'PENDING'});save();render();toast(t('apply')+' ✓')};
+ // sell
+ document.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>{const v=S.vouchers.find(x=>x.id===b.dataset.sell);const buyer=(document.querySelector(`[data-buyer="${v.id}"]`).value||'').trim();v.status='SOLD';v.buyer=buyer;const w=wallet(S.user.id);const comm=Math.round(v.amount*100*0.10);w.balance+=comm;w.tx.unshift({type:'COMMISSION',amount:comm,date:new Date().toISOString().slice(0,10)});save();render();toast(t('sold')+' ✓')});
+ // studio
+ if($('add-lvl'))$('add-lvl').onclick=()=>{const v=($('lvl-title').value||'').trim();if(!v)return;const id='c'+Date.now();S.curriculum.push({id,title:v,lessons:[]});S.progress[id]='unlocked';save();render();toast(t('add'))};
+ document.querySelectorAll('[data-addles]').forEach(b=>b.onclick=()=>{const cid=b.dataset.addles;const c=S.curriculum.find(x=>x.id===cid);const tt=(document.querySelector(`[data-lt="${cid}"]`).value||'').trim();const yt=(document.querySelector(`[data-yt="${cid}"]`).value||'').trim();const tpl=(document.querySelector(`[data-tpl="${cid}"]`)||{}).value||'video';const body=(document.querySelector(`[data-body="${cid}"]`)||{}).value||'';if(!tt)return;c.lessons.push({id:'le'+Date.now(),title:tt,yt,tpl,body:body.trim()});save();render();toast(t('add'))});
+ if($('go-apply'))$('go-apply').onclick=()=>{S.view='becomeTeacher';render()};
+ // sessions
+ if($('ls-create'))$('ls-create').onclick=()=>{const title=($('ls-title').value||'Untitled').trim();const plat=$('ls-plat').value;const when=$('ls-when').value||'2026-06-25 18:00';const link=plat==='Zoom'?'zoom.us/j/'+Math.floor(1e10*Math.random()):'meet.google.com/'+Math.random().toString(36).slice(2,5)+'-'+Math.random().toString(36).slice(2,6);S.sessions.unshift({id:'s'+Date.now(),title,platform:plat,when,link});save();render();toast(t('create'))};
+ // analytics
+ if($('bench'))$('bench').onclick=()=>toast(t('benchOk'));
+ // wallet
+ document.querySelectorAll('[data-wal]').forEach(b=>b.onclick=()=>walletOp(b.dataset.wal));
+ if($('rdm-go'))$('rdm-go').onclick=()=>redeemVoucher($('rdm').value);
+ // accounts: suspend with reason / activate
+ document.querySelectorAll('[data-suspend]').forEach(b=>b.onclick=()=>{const u=S.users.find(x=>x.id===b.dataset.suspend);const why=prompt(t('reasonQ'));if(why==null)return;u.status='SUSPENDED';u.reason=why.trim();save();render();toast(t('suspended'))});
+ document.querySelectorAll('[data-activate]').forEach(b=>b.onclick=()=>{const u=S.users.find(x=>x.id===b.dataset.activate);u.status='ACTIVE';u.reason='';save();render()});
+ // treasury
+ if($('tr-add'))$('tr-add').onclick=()=>{const a=Math.round((+$('tr-amt').value||0)*100);if(a<=0)return;S.treasury.balance+=a;save();render();toast(t('prepBalance')+' ✓')};
+ // agent buys card from admin
+ document.querySelectorAll('[data-buycard]').forEach(b=>b.onclick=()=>{const v=S.vouchers.find(x=>x.id===b.dataset.buycard);if(!v||v.ownerAgent)return;const price=Math.round(v.amount*100*S.wholesalePct/100);const w=wallet(S.user.id);if(w.balance<price){toast(t('insufficientTreasury'));return}w.balance-=price;w.tx.unshift({type:'BUY_CARDS',amount:-price,date:new Date().toISOString().slice(0,10)});S.treasury.balance+=price;v.ownerAgent=S.user.id;save();render();toast(t('buyNow')+' ✓')});
+ // teacher create/publish course
+ if($('co-create'))$('co-create').onclick=()=>{const tt=($('co-title').value||'').trim();const pr=Math.max(1,+$('co-price').value||20);const sub=$('co-sub').value;if(!tt)return;S.courses.push({id:'co'+Date.now(),teacherId:S.user.id,title:tt,subject:sub,price:pr,published:false});save();render();toast(t('createCourse')+' ✓')};
+ document.querySelectorAll('[data-pubcourse]').forEach(b=>b.onclick=()=>{if(!teacherHasCurriculum(S.user.id)){toast(t('curriculumReq'));return}const c=S.courses.find(x=>x.id===b.dataset.pubcourse);c.published=true;save();render();toast(t('publishCourse')+' ✓')});
+ // student enroll + buy course
+ document.querySelectorAll('[data-enroll]').forEach(b=>b.onclick=()=>{const cid=b.dataset.enroll;if(S.enrollments.find(e=>e.courseId===cid&&e.studentId===S.user.id))return;S.enrollments.push({id:'en'+Date.now(),courseId:cid,studentId:S.user.id,status:'PENDING'});save();render();toast(t('enroll')+' ✓')});
+ document.querySelectorAll('[data-buycourse]').forEach(b=>b.onclick=()=>{const c=S.courses.find(x=>x.id===b.dataset.buycourse);const cost=Math.round(c.price*100);const w=wallet(S.user.id);if(w.balance<cost){toast(t('insufficientTreasury'));return}w.balance-=cost;w.tx.unshift({type:'COURSE',amount:-cost,date:new Date().toISOString().slice(0,10)});const comm=Math.round(cost*S.platformPct/100);const tw=wallet(c.teacherId);tw.balance+=(cost-comm);tw.tx.unshift({type:'COURSE',amount:(cost-comm),date:new Date().toISOString().slice(0,10)});S.sales.push({id:'sa'+Date.now(),courseId:c.id,studentId:S.user.id,amount:cost,method:'wallet',commission:comm});const e=S.enrollments.find(x=>x.courseId===c.id&&x.studentId===S.user.id);if(e)e.status='CONFIRMED';save();render();toast(t('confirmed')+' ✓')});
+ // teacher accept enrollment + cash sale
+ document.querySelectorAll('[data-accept]').forEach(b=>b.onclick=()=>{const e=S.enrollments.find(x=>x.id===b.dataset.accept);e.status='ACCEPTED';save();render();toast(t('accept')+' ✓')});
+ if($('cash-sell'))$('cash-sell').onclick=()=>{const cid=$('cash-course').value;const c=S.courses.find(x=>x.id===cid);if(!c)return;const cost=Math.round(c.price*100);const comm=Math.round(cost*S.platformPct/100);const tw=wallet(S.user.id);tw.balance+=(cost-comm);tw.tx.unshift({type:'COURSE',amount:(cost-comm),date:new Date().toISOString().slice(0,10)});S.sales.push({id:'sa'+Date.now(),courseId:c.id,studentId:null,amount:cost,method:'cash',commission:comm});save();render();toast(t('confirmed')+' ✓')};
+ // search: teachers
+ if($('q-teacher'))$('q-teacher').oninput=e=>{S.q.teacher=e.target.value};
+ if($('q-tsub'))$('q-tsub').onchange=e=>{S.q.tSubject=e.target.value;render()};
+ if($('q-teacher'))$('q-teacher').onkeydown=e=>{if(e.key==='Enter')render()};
+ if($('q-tclear'))$('q-tclear').onclick=()=>{S.q.teacher='';S.q.tSubject='';render()};
+ // search: courses
+ if($('q-course'))$('q-course').oninput=e=>{S.q.course=e.target.value};
+ if($('q-course'))$('q-course').onkeydown=e=>{if(e.key==='Enter')render()};
+ if($('q-csub'))$('q-csub').onchange=e=>{S.q.cSubject=e.target.value;render()};
+ if($('q-cmax'))$('q-cmax').oninput=e=>{S.q.cMax=e.target.value};
+ if($('q-cmax'))$('q-cmax').onkeydown=e=>{if(e.key==='Enter')render()};
+ if($('q-cclear'))$('q-cclear').onclick=()=>{S.q.course='';S.q.cSubject='';S.q.cMax='';render()};
+ // quiz builder
+ if($('q-course'))0;
+ if($('nq-ai'))$('nq-ai').onclick=()=>{const u=S.user.dialect;const d=aiDraft(u);$('nq-q').value=d.q;[0,1,2,3].forEach(j=>{$('nq-o'+j).value=d.options[j]});document.querySelector(`input[name="nq-a"][value="${d.answer}"]`).checked=true;$('nq-m').value=d.marks;toast(t('aiAssist'))};
+ if($('nq-add'))$('nq-add').onclick=()=>{const q=($('nq-q').value||'').trim();const opts=[0,1,2,3].map(j=>($('nq-o'+j).value||'').trim());if(!q||opts.some(o=>!o))return;const ans=+document.querySelector('input[name="nq-a"]:checked').value;const m=Math.max(1,+$('nq-m').value||5);S._qdraft.courseId=$('q-course').value;S._qdraft.title=$('q-title').value;S._qdraft.questions.push({q,options:opts,answer:ans,marks:m});render()};
+ if($('q-save'))$('q-save').onclick=()=>{const d=S._qdraft;d.courseId=$('q-course').value;d.title=($('q-title').value||'').trim()||'Quiz';if(!d.courseId||!d.questions.length)return;S.quizzes.push({id:'qz'+Date.now(),courseId:d.courseId,title:d.title,questions:d.questions});S._qdraft=null;save();render();toast(t('saveQuiz')+' ✓')};
+ // student take quiz
+ document.querySelectorAll('[data-takequiz]').forEach(b=>b.onclick=()=>{S.cq={quizId:b.dataset.takequiz,i:0,picked:[],done:false,score:0};render()});
+ document.querySelectorAll('[data-cqo]').forEach(b=>b.onclick=()=>{S.cq.picked[S.cq.i]=+b.dataset.cqo;render()});
+ if($('cq-next'))$('cq-next').onclick=()=>{const qz=S.quizzes.find(x=>x.id===S.cq.quizId);if(S.cq.i+1<qz.questions.length){S.cq.i++;render()}else{let sc=0;qz.questions.forEach((q,i)=>{if(S.cq.picked[i]===q.answer)sc+=q.marks});S.cq.score=sc;S.cq.done=true;const tot=qz.questions.reduce((s,q)=>s+q.marks,0);S.attempts=S.attempts.filter(a=>!(a.quizId===qz.id&&a.studentId===S.user.id));S.attempts.push({id:'at'+Date.now(),quizId:qz.id,studentId:S.user.id,score:sc,total:tot});save();render()}};
+ if($('cq-close'))$('cq-close').onclick=()=>{S.cq=null;render()};
+ // committee (teacher): propose questions
+ document.querySelectorAll('[data-cqai]').forEach(b=>b.onclick=()=>{const cid=b.dataset.cqai;const c=S.committees.find(x=>x.id===cid);const d=aiDraft(c.dialect);$('cq-q-'+cid).value=d.q;[0,1,2,3].forEach(j=>{$('cq-o'+j+'-'+cid).value=d.options[j]});document.querySelector(`input[name="cq-a-${cid}"][value="${d.answer}"]`).checked=true;$('cq-m-'+cid).value=d.marks;toast(t('aiAssist'))});
+ document.querySelectorAll('[data-cqadd]').forEach(b=>b.onclick=()=>{const cid=b.dataset.cqadd;const q=($('cq-q-'+cid).value||'').trim();const opts=[0,1,2,3].map(j=>($('cq-o'+j+'-'+cid).value||'').trim());if(!q||opts.some(o=>!o))return;const ans=+document.querySelector(`input[name="cq-a-${cid}"]:checked`).value;const m=Math.max(1,+$('cq-m-'+cid).value||5);const c=S.committees.find(x=>x.id===cid);S.examBank.push({id:'eb'+Date.now(),committeeId:cid,dialect:c.dialect,q,options:opts,answer:ans,marks:m,status:'PROPOSED',authorId:S.user.id});save();render();toast(t('proposeQ')+' ✓')});
+ // committees (admin): create + approve questions
+ if($('cm-create'))$('cm-create').onclick=()=>{const nm=($('cm-name').value||'').trim();if(!nm)return;const mem=[...document.querySelectorAll('.cm-mem:checked')].map(x=>x.value);S.committees.push({id:'cm'+Date.now(),name:nm,dialect:$('cm-dia').value,memberIds:mem,status:'ACTIVE'});save();render();toast(t('createCommittee')+' ✓')};
+ document.querySelectorAll('[data-approveq]').forEach(b=>b.onclick=()=>{const q=S.examBank.find(x=>x.id===b.dataset.approveq);q.status='APPROVED';save();render();toast(t('approveQ')+' ✓')});
+ // teacher applications (admin)
+ document.querySelectorAll('[data-tapprove]').forEach(b=>b.onclick=()=>{const a=S.teacherApps.find(x=>x.id===b.dataset.tapprove);a.status='APPROVED';const u=S.users.find(x=>x.id===a.userId);if(u){u.role='TEACHER';u.approved=true;u.subjects=a.subjects;u.bio=a.bio}save();render();toast(t('approveTeacher')+' ✓')});
+ document.querySelectorAll('[data-treject]').forEach(b=>b.onclick=()=>{const a=S.teacherApps.find(x=>x.id===b.dataset.treject);a.status='REJECTED';save();render()});
+ // become teacher (student applies)
+ if($('ta-submit'))$('ta-submit').onclick=()=>{const subs=[...document.querySelectorAll('.ta-sub:checked')].map(x=>x.value);const bio=($('ta-bio').value||'').trim();const exp=($('ta-exp').value||'').trim();const files=$('ta-cert').files;const certs=files?[...files].map(f=>f.name):[];if(!subs.length||!bio){toast(t('bad'));return}const ex=S.teacherApps.find(a=>a.userId===S.user.id);const rec={id:'ta'+Date.now(),userId:S.user.id,name:S.user.name,subjects:subs,bio,experience:exp,certs,status:'PENDING'};if(ex)Object.assign(ex,rec);else S.teacherApps.push(rec);save();render();toast(t('submitApp')+' ✓')};
+ // license print + agent sign
+ document.querySelectorAll('[data-print-license]').forEach(b=>b.onclick=(e)=>{e.preventDefault();const L=S.licenses.find(x=>x.id===b.dataset.printLicense);printCard(`<div style="border:4px solid #1f6e5b;padding:34px"><h1 style="text-align:center">Wane — ${t('license')}</h1><h3 style="text-align:center">${esc(L.agentName)}</h3><p style="line-height:1.8">${esc(L.terms)}</p><div style="display:flex;justify-content:space-between;margin-top:40px"><div>${t('adminSigned')}: ${L.adminSigned?'✓ Wane':'—'}</div><div>${t('agentSigned')}: ${L.agentSigned?'✓ '+esc(L.agentName):'—'}</div></div></div>`)});
+ document.querySelectorAll('[data-signlicense]').forEach(b=>b.onclick=()=>{const L=S.licenses.find(x=>x.id===b.dataset.signlicense);L.agentSigned=true;L.signedAt=new Date().toISOString().slice(0,10);save();render();toast(t('signed')+' ✓')});
+}
+window.addEventListener('online',()=>{S.online=true;render()});
+window.addEventListener('offline',()=>{S.online=false;render()});
+if(!S.wallets['g'])S.wallets['g']={balance:20000,tx:[]};
+render();
+</script>
+</body>
+</html>

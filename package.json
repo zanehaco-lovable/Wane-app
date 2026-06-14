@@ -1,0 +1,23 @@
+{
+  "name": "wane-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Wane platform API: auth, progression, exams (reading/writing/speaking), RAG correction, wallet ledger, KYC, inheritance, certificates, live sessions, offline sync.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.15.0",
+    "pg": "^8.12.0",
+    "qrcode": "^1.5.4"
+  },
+  "engines": { "node": ">=20" }
+}
